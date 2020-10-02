@@ -11,7 +11,7 @@ docker:
   script:
     - cd docker
     - docker pull tbxdev/build-docker || true
-    - docker build --cache-from tbxdev/build-docker -t tbxdev/build-docker .
+    - docker build --pull --cache-from tbxdev/build-docker -t tbxdev/build-docker .
     - docker push tbxdev/build-docker
   after_script:
     - docker logout
