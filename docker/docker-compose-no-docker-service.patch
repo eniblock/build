@@ -1,8 +1,16 @@
 diff --git a/compose/project.py b/compose/project.py
-index 696c8b04..b9fc5750 100644
+index 696c8b04..32ddf556 100644
 --- a/compose/project.py
 +++ b/compose/project.py
-@@ -103,7 +103,7 @@ class Project(object):
+@@ -4,6 +4,7 @@ from __future__ import unicode_literals
+ import datetime
+ import logging
+ import operator
++import os
+ import re
+ from functools import reduce
+ from os import path
+@@ -103,7 +104,7 @@ class Project(object):
  
          for service_dict in config_data.services:
              service_dict = dict(service_dict)
