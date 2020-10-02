@@ -22,13 +22,13 @@ if [ "$1" == "build" ]; then
     if [ "$dockerfile" == "" ]; then
       dockerfile="$context/Dockefile"
     fi
-    cmd=/kaniko/executor \
-      --context $context \
-      --dockerfile $dockerfile \
-      --digest-file $iidfile \
-      --destination $tag \
-      --cache-repo $CI_REGISTRY_IMAGE/build-cache \
-      --cache=true
+    cmd="/kaniko/executor
+      --context $context
+      --dockerfile $dockerfile
+      --digest-file $iidfile
+      --destination $tag
+      --cache-repo $CI_REGISTRY_IMAGE/build-cache
+      --cache=true"
     if [ -n "$DOCKER_WRAPPER_DEBUG" ]; then
         echo "---------- running: $cmd ----------" >> /dev/stderr
     fi
