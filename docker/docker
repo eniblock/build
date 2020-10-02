@@ -1,6 +1,8 @@
 #!/bin/bash
 
-echo "---------- running: docker $@ ----------" >> /dev/stderr
+if [ -n "$DOCKER_WRAPPER_DEBUG" ]; then
+    echo "---------- running: docker $@ ----------" >> /dev/stderr
+fi
 
 if [ "$1" == "build" ]; then
     shift
@@ -20,13 +22,17 @@ if [ "$1" == "build" ]; then
     if [ "$dockerfile" == "" ]; then
       dockerfile="$context/Dockefile"
     fi
-    /kaniko/executor \
+    cmd=/kaniko/executor \
       --context $context \
       --dockerfile $dockerfile \
       --digest-file $iidfile \
       --destination $tag \
       --cache-repo $CI_REGISTRY_IMAGE/build-cache \
       --cache=true
+    if [ -n "$DOCKER_WRAPPER_DEBUG" ]; then
+        echo "---------- running: $cmd ----------" >> /dev/stderr
+    fi
+    exec $cmd
 else
     exec /usr/bin/docker "$@"
 fi
