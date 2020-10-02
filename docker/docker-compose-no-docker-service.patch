@@ -19,3 +19,27 @@ index 696c8b04..32ddf556 100644
                  service_networks = get_networks(service_dict, networks)
              else:
                  service_networks = {}
+diff --git a/compose/volume.py b/compose/volume.py
+index b02fc5d8..78fc4303 100644
+--- a/compose/volume.py
++++ b/compose/volume.py
+@@ -2,6 +2,7 @@ from __future__ import absolute_import
+ from __future__ import unicode_literals
+ 
+ import logging
++import os
+ import re
+ 
+ from docker.errors import NotFound
+@@ -93,8 +94,9 @@ class Volume(object):
+         if self.legacy is not None:
+             return
+         try:
+-            data = self.inspect(legacy=True)
+-            self.legacy = data is not None
++            if 'NO_DOCKER_SERVICE' not in os.environ:
++                data = self.inspect(legacy=True)
++                self.legacy = data is not None
+         except NotFound:
+             self.legacy = False
+ 
