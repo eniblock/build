@@ -6,6 +6,7 @@ RUN apk add \
   docker-compose \
   git \
   openssh-client \
+  patch \
   util-linux
 RUN curl -sL https://github.com/jwilder/dockerize/releases/download/v0.6.1/dockerize-alpine-linux-amd64-v0.6.1.tar.gz | tar xvzC /usr/bin
 RUN cd /usr/local/bin \
@@ -21,4 +22,7 @@ COPY entry-point.sh /
 RUN mkdir /usr/lib/docker-kaniko
 COPY docker /usr/lib/docker-kaniko/
 COPY docker-compose-build-push /usr/local/bin/
+COPY docker-compose-no-docker-service.patch /
+RUN cd /usr/lib/python3.8/site-packages \
+  && patch -p1 < /docker-compose-no-docker-service.patch
 ENTRYPOINT [ "/entry-point.sh" ]

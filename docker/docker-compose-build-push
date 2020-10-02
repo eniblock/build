@@ -1,5 +1,6 @@
 #!/bin/bash
 
 export COMPOSE_DOCKER_CLI_BUILD=1
+export NO_DOCKER_SERVICE=1
 export PATH=/usr/lib/docker-kaniko:$PATH
 exec docker-compose build "$@"

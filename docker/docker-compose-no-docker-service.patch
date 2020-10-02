@@ -1,0 +1,13 @@
+diff --git a/compose/project.py b/compose/project.py
+index 696c8b04..b9fc5750 100644
+--- a/compose/project.py
++++ b/compose/project.py
+@@ -103,7 +103,7 @@ class Project(object):
+ 
+         for service_dict in config_data.services:
+             service_dict = dict(service_dict)
+-            if use_networking:
++            if use_networking and 'NO_DOCKER_SERVICE' not in os.environ:
+                 service_networks = get_networks(service_dict, networks)
+             else:
+                 service_networks = {}
