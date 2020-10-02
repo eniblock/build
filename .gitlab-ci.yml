@@ -10,7 +10,8 @@ docker:
     - docker login -u $DOCKER_HUB_USER -p $DOCKER_HUB_PASSWORD
   script:
     - cd docker
-    - docker build -t tbxdev/build-docker .
+    - docker pull tbxdev/build-docker || true
+    - docker build --cache-from tbxdev/build-docker -t tbxdev/build-docker .
     - docker push tbxdev/build-docker
   after_script:
     - docker logout
