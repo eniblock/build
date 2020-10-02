@@ -18,4 +18,7 @@ ENV DOCKER_CREDENTIAL_GCR_CONFIG=/kaniko/.config/gcloud/docker_credential_gcr_co
   USER=/root \
   HOME=/root
 COPY entry-point.sh /
+RUN mkdir /usr/lib/docker-kaniko
+COPY docker /usr/lib/docker-kaniko/
+COPY docker-compose-build-push /usr/local/bin/
 ENTRYPOINT [ "/entry-point.sh" ]

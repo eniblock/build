@@ -1,0 +1,32 @@
+#!/bin/bash
+
+echo "---------- running: docker $@ ----------" >> /dev/stderr
+
+if [ "$1" == "build" ]; then
+    shift
+    context=
+    tag=
+    iidfile=
+    dockerfile=
+    while [[ "$#" -gt 0 ]]; do
+        case $1 in
+            --tag) tag="$2"; shift ;;
+            --iidfile) iidfile="$2"; shift ;;
+            --file) dockerfile="$2"; shift ;;
+            *) context="$1";;
+        esac
+        shift
+    done
+    if [ "$dockerfile" == "" ]; then
+      dockerfile="$opts/Dockefile"
+    fi
+    /kaniko/executor \
+      --context $context \
+      --dockerfile $dockerfile \
+      --digest-file $iidfile \
+      --destination $tag \
+      --cache-repo $CI_REGISTRY_IMAGE/build-cache \
+      --cache=true
+else
+    exec /usr/bin/docker "$@"
+fi
