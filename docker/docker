@@ -20,7 +20,7 @@ if [ "$1" == "build" ]; then
         shift
     done
     if [ "$dockerfile" == "" ]; then
-      dockerfile="$context/Dockefile"
+      dockerfile="$context/Dockerfile"
     fi
     cmd="/kaniko/executor
       --context $context
