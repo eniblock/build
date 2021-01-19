@@ -14,5 +14,5 @@ RUN cd /usr/local/bin \
   && chmod a+x vault
 RUN cd /usr/local/bin \
   && curl https://releases.hashicorp.com/terraform/0.14.4/terraform_0.14.4_linux_amd64.zip | unzip - \
-  && chmod a+x vault
+  && chmod a+x terraform
 RUN curl -sL https://get.helm.sh/helm-v3.5.0-linux-amd64.tar.gz | tar xvzC /usr/bin --strip-components=1 linux-amd64/helm
