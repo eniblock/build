@@ -20,3 +20,23 @@ docker:
       - .gitlab-ci.yml
       - docker/**/*
       - docker/*
+
+deploy:
+  stage: publish
+  image: docker:stable
+  services:
+    - docker:dind
+  before_script:
+    - docker login -u $DOCKER_HUB_USER -p $DOCKER_HUB_PASSWORD
+  script:
+    - cd deploy
+    - docker pull tbxdev/build-deploy || true
+    - docker build --pull --cache-from tbxdev/build-deploy -t tbxdev/build-deploy .
+    - docker push tbxdev/build-deploy
+  after_script:
+    - docker logout
+  only:
+    changes:
+      - .gitlab-ci.yml
+      - deploy/**/*
+      - deploy/*
