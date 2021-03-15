@@ -5,3 +5,4 @@ RUN apk add \
   git
 ENV BUILDKITD_FLAGS=--oci-worker-no-process-sandbox
 ENTRYPOINT [ "sh", "-c" ]
+USER 1000:1000
