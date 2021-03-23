@@ -20,3 +20,4 @@ RUN curl -fsSL https://dl.k8s.io/release/v1.20.2/bin/linux/amd64/kubectl > /usr/
   && chmod 755 /usr/local/bin/kubectl
 RUN curl -fsSL https://github.com/vmware-tanzu/carvel-kbld/releases/download/v0.29.0/kbld-linux-amd64 > /usr/local/bin/kbld \
   && chmod 755 /usr/local/bin/kbld
+COPY kbldpp /usr/local/bin
