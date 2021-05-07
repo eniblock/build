@@ -21,6 +21,26 @@ docker:
       - docker/**/*
       - docker/*
 
+helm:
+  stage: publish
+  image: docker:stable
+  services:
+    - docker:dind
+  before_script:
+    - docker login -u $DOCKER_HUB_USER -p $DOCKER_HUB_PASSWORD
+  script:
+    - cd helm
+    - docker pull tbxdev/build-helm || true
+    - docker build --pull --cache-from tbxdev/build-helm -t tbxdev/build-helm .
+    - docker push tbxdev/build-helm
+  after_script:
+    - docker logout
+  only:
+    changes:
+      - .gitlab-ci.yml
+      - docker/**/*
+      - docker/*
+
 deploy:
   stage: publish
   image: docker:stable
