@@ -38,8 +38,8 @@ helm:
   only:
     changes:
       - .gitlab-ci.yml
-      - docker/**/*
-      - docker/*
+      - helm/**/*
+      - helm/*
 
 deploy:
   stage: publish
