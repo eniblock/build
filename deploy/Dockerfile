@@ -21,3 +21,4 @@ RUN curl -fsSL https://dl.k8s.io/release/v1.20.2/bin/linux/amd64/kubectl > /usr/
 RUN curl -fsSL https://github.com/vmware-tanzu/carvel-kbld/releases/download/v0.29.0/kbld-linux-amd64 > /usr/local/bin/kbld \
   && chmod 755 /usr/local/bin/kbld
 COPY kbldpp /usr/local/bin
+ENV HELM_EXPERIMENTAL_OCI=1
