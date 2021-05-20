@@ -14,6 +14,10 @@ else
     exit 1
   fi
 fi
+# copy the Chart in the safe place
+tmp_chart=`mktemp`
+cp $helmdir/Chart.yaml $tmp_chart
+
 yq e -i ".appVersion = \"$version\"" $helmdir/Chart.yaml
 helm chart save ./$helmdir $image:$version
 helm chart push $image:$version
@@ -23,4 +27,5 @@ if [ -z "$CI_COMMIT_TAG" ]; then
   helm chart save $helmdir $image:$version
   helm chart push $image:$version
 fi
-git checkout HEAD $helmdir/Chart.yaml
+
+cp $tmp_chart $helmdir/Chart.yaml
