@@ -20,5 +20,7 @@ RUN curl -fsSL https://dl.k8s.io/release/v1.20.2/bin/linux/amd64/kubectl > /usr/
   && chmod 755 /usr/local/bin/kubectl
 RUN curl -fsSL https://github.com/vmware-tanzu/carvel-kbld/releases/download/v0.29.0/kbld-linux-amd64 > /usr/local/bin/kbld \
   && chmod 755 /usr/local/bin/kbld
+RUN wget -O /usr/local/bin/yq https://github.com/mikefarah/yq/releases/download/v4.7.1/yq_linux_amd64
 COPY kbldpp /usr/local/bin
+RUN chmod a+x /usr/local/bin/*
 ENV HELM_EXPERIMENTAL_OCI=1
