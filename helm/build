@@ -24,6 +24,7 @@ helm chart push $image:$version
 
 if [ -z "$CI_COMMIT_TAG" ]; then
   version=$version.$CI_PIPELINE_IID
+  yq e -i ".appVersion = \"$version\"" $helmdir/Chart.yaml
   helm chart save $helmdir $image:$version
   helm chart push $image:$version
 fi
