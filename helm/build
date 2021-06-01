@@ -14,17 +14,23 @@ else
     exit 1
   fi
 fi
+
+if [ -z "$CI_COMMIT_TAG" ]; then
+  appVersion=$version.$CI_PIPELINE_IID
+else
+  appVersion=$version
+fi
+
 # copy the Chart in the safe place
 tmp_chart=`mktemp`
 cp $helmdir/Chart.yaml $tmp_chart
 
-yq e -i ".appVersion = \"$version\"" $helmdir/Chart.yaml
+yq e -i ".appVersion = \"$appVersion\"" $helmdir/Chart.yaml
 helm chart save ./$helmdir $image:$version
 helm chart push $image:$version
 
 if [ -z "$CI_COMMIT_TAG" ]; then
   version=$version.$CI_PIPELINE_IID
-  yq e -i ".appVersion = \"$version\"" $helmdir/Chart.yaml
   helm chart save $helmdir $image:$version
   helm chart push $image:$version
 fi
