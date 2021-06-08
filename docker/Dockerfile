@@ -1,6 +1,7 @@
 FROM moby/buildkit:rootless
 USER root
 RUN apk add \
+  bash \
   docker-cli \
   git \
   sudo
