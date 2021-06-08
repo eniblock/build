@@ -12,7 +12,7 @@ else
   version=$CI_COMMIT_TAG
 fi
 if [ "$BUILD_CACHE" == "true" ]; then
-  cache_opt=--import-cache type=registry,ref=$image:build-cache
+  cache_opt="--import-cache type=registry,ref=$image:build-cache"
 fi
 buildctl-daemonless.sh build \
   --frontend dockerfile.v0 \
