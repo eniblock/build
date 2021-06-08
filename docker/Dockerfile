@@ -10,6 +10,7 @@ ADD build_with_helm_tag /usr/local/bin/
 ADD build_with_pipeline_id /usr/local/bin/
 ADD build /usr/local/bin/
 RUN chmod a+x /usr/local/bin/*
-ENV BUILDKITD_FLAGS=--oci-worker-no-process-sandbox
+ENV BUILDKITD_FLAGS=--oci-worker-no-process-sandbox \
+  BUILD_CACHE=true
 ENTRYPOINT [ "sh", "-c" ]
 USER user:user
