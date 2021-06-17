@@ -4,6 +4,7 @@ set -e
 
 image=$1
 helmdir=$2
+patch_values=$3
 
 version=`yq eval .version $helmdir/Chart.yaml`
 if [ -z "$CI_COMMIT_TAG" ]; then
@@ -26,6 +27,9 @@ tmp_chart=`mktemp`
 cp $helmdir/Chart.yaml $tmp_chart
 
 yq e -i ".appVersion = \"$appVersion\"" $helmdir/Chart.yaml
+for path in $patch_values; do
+  yq e -i "$path = \"$appVersion\"" $helmdir/values.yaml
+done
 helm chart save ./$helmdir $image:$version
 helm chart push $image:$version
 
