@@ -26,6 +26,7 @@ buildctl-daemonless.sh build \
   --local context=$context \
   --local dockerfile=$dockerfile \
   --export-cache mode=max,type=registry,ref=$image:build-cache,push=true \
+  --secret id=gitlabToken,env=CI_JOB_TOKEN
   $cache_opt \
   --output type=image,\"name=$images\",push=true
   "${@:5}"
