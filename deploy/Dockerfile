@@ -7,7 +7,8 @@ RUN apk add \
   git \
   openssh-client \
   patch \
-  util-linux
+  util-linux \
+  jq
 RUN curl -sL https://github.com/jwilder/dockerize/releases/download/v0.6.1/dockerize-alpine-linux-amd64-v0.6.1.tar.gz | tar xvzC /usr/bin
 RUN cd /usr/local/bin \
   && curl https://releases.hashicorp.com/vault/1.5.3/vault_1.5.3_linux_amd64.zip | unzip - \
