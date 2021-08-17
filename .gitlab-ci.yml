@@ -8,7 +8,7 @@ docker:
   stage: publish
   script:
     - docker login -u $DOCKER_HUB_USER -p $DOCKER_HUB_PASSWORD
-    - build tbxdev/build-docker docker
+    - build $CI_REGISTRY_IMAGE/docker docker
   only:
     changes:
       - .gitlab-ci.yml
@@ -19,7 +19,7 @@ helm:
   stage: publish
   script:
     - docker login -u $DOCKER_HUB_USER -p $DOCKER_HUB_PASSWORD
-    - build tbxdev/build-helm helm
+    - build $CI_REGISTRY_IMAGE/helm helm
   only:
     changes:
       - .gitlab-ci.yml
@@ -30,7 +30,7 @@ deploy:
   stage: publish
   script:
     - docker login -u $DOCKER_HUB_USER -p $DOCKER_HUB_PASSWORD
-    - build tbxdev/build-deploy deploy
+    - build $CI_REGISTRY_IMAGE/deploy deploy
   only:
     changes:
       - .gitlab-ci.yml
