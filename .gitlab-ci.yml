@@ -7,7 +7,7 @@ image:
 docker:
   stage: publish
   script:
-    - docker login -u $DOCKER_HUB_USER -p $DOCKER_HUB_PASSWORD
+    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
     - build $CI_REGISTRY_IMAGE/docker docker
   only:
     changes:
@@ -18,7 +18,7 @@ docker:
 helm:
   stage: publish
   script:
-    - docker login -u $DOCKER_HUB_USER -p $DOCKER_HUB_PASSWORD
+    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
     - build $CI_REGISTRY_IMAGE/helm helm
   only:
     changes:
@@ -29,7 +29,7 @@ helm:
 deploy:
   stage: publish
   script:
-    - docker login -u $DOCKER_HUB_USER -p $DOCKER_HUB_PASSWORD
+    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
     - build $CI_REGISTRY_IMAGE/deploy deploy
   only:
     changes:
