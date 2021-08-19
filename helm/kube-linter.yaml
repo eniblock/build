@@ -6,6 +6,19 @@ checks:
     - run-as-non-root
     - unset-cpu-requirements
     - unset-memory-requirements
+  include:
+    - no-liveness-probe
+    - access-to-create-pods
+    - access-to-secrets
+    - cluster-admin-role-binding
+    - default-service-account
+    - unsafe-proc-mount
+    - wildcard-in-rules
+    - writable-host-mount
+    # TODO: activate these, once ready
+    # - exposed-services
+    # - no-readiness-probe
+    # - no-rolling-update-strategy
 customChecks:
   - name: unset-memory-requests
     template: memory-requirements
