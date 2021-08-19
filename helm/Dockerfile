@@ -15,6 +15,8 @@ RUN wget https://dl.k8s.io/release/v1.20.2/bin/linux/amd64/kubectl -O /usr/local
 RUN curl -sL https://get.helm.sh/helm-v3.5.4-linux-amd64.tar.gz | tar xvzC /usr/local/bin --strip-components=1 linux-amd64/helm
 RUN wget -O /usr/local/bin/yq https://github.com/mikefarah/yq/releases/download/v4.7.1/yq_linux_amd64
 COPY --from=kube-linter-builder /app/bin/linux/kube-linter /usr/local/bin/
-ADD build /usr/local/bin/
+COPY kube-linter.yaml /etc/
+ADD build lint /usr/local/bin/
 RUN chmod a+x /usr/local/bin/*
 ENV HELM_EXPERIMENTAL_OCI=1
+WORKDIR /app

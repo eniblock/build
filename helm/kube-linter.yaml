@@ -1,0 +1,35 @@
+checks:
+  # doNotAutoAddDefaults: true
+  exclude:
+    - no-read-only-root-fs
+    - drop-net-raw-capability
+    - run-as-non-root
+    - unset-cpu-requirements
+    - unset-memory-requirements
+customChecks:
+  - name: unset-memory-requests
+    template: memory-requirements
+    params:
+      requirementsType: request
+      lowerBoundMB: 0
+      upperBoundMB: 0
+  - name: unset-cpu-requests
+    template: cpu-requirements
+    params:
+      requirementsType: request
+      lowerBoundMillis: 0
+      upperBoundMillis: 0
+  - name: not-always-image-pull-policy
+    template: image-pull-policy
+    params:
+      forbiddenPolicies:
+        - Always
+        - Never
+  - name: reloader-annotation
+    template: required-annotation
+    params:
+      key: reloader.stakater.com/auto
+      value: "true"
+    scope:
+      objectKinds:
+        - DeploymentLike
