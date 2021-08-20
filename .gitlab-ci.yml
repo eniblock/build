@@ -3,6 +3,8 @@ stages:
 
 image:
   name: $CI_REGISTRY_IMAGE/docker:gle-it-136-fix-docker-rate-limit
+  entrypoint: ["/entrypoint.sh"]
+
 
 docker:
   stage: publish
