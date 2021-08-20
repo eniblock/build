@@ -2,7 +2,7 @@ stages:
   - publish
 
 image:
-  name: $CI_REGISTRY_IMAGE/docker@sha256:949f6b78c8392702b0788e200cbb9c5fe240408161245172ac923d0038d642d6
+  name: $CI_REGISTRY_IMAGE/docker@sha256:267a439e6d0854e09d5a4378b869edc6f352b1eff8860fa6be78a406702a0127
   entrypoint:
     - /usr/local/bin/dockerhublogin
 
