@@ -1,0 +1,16 @@
+#!/bin/bash
+
+set -e
+
+echo "host limit:"
+TOKEN=$(curl -s "https://auth.docker.io/token?service=registry.docker.io&scope=repository:ratelimitpreview/test:pull" | jq -r .token)
+curl -s --head -H "Authorization: Bearer $TOKEN" https://registry-1.docker.io/v2/ratelimitpreview/test/manifests/latest | grep ratelimit-remaining
+
+if [ -n "$DOCKER_HUB_PASSWORD" ]; then
+  echo $DOCKER_HUB_PASSWORD | docker login -u $DOCKER_HUB_USER --password-stdin
+  echo "user limit:"
+  TOKEN=$(curl --user $DOCKER_HUB_USER:$DOCKER_HUB_PASSWORD -s "https://auth.docker.io/token?service=registry.docker.io&scope=repository:ratelimitpreview/test:pull" | jq -r .token)
+  curl -s --head -H "Authorization: Bearer $TOKEN" https://registry-1.docker.io/v2/ratelimitpreview/test/manifests/latest | grep ratelimit-remaining
+fi
+
+exec "$@"

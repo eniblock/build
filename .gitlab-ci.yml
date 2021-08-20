@@ -2,12 +2,12 @@ stages:
   - publish
 
 image:
-  name: $CI_REGISTRY_IMAGE/docker:1.1.0
+  name: $CI_REGISTRY_IMAGE/docker@sha256:22baae503dc0be76d10d7a06a2f4543ec5bc814f0c83310fc864ccaae8cec05a
 
 docker:
   stage: publish
   script:
-    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+    - echo $CI_REGISTRY_PASSWORD | docker login -u $CI_REGISTRY_USER  --password-stdin $CI_REGISTRY
     - build $CI_REGISTRY_IMAGE/docker docker
   only:
     changes:
@@ -18,7 +18,7 @@ docker:
 helm:
   stage: publish
   script:
-    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+    - echo $CI_REGISTRY_PASSWORD | docker login -u $CI_REGISTRY_USER  --password-stdin $CI_REGISTRY
     - build $CI_REGISTRY_IMAGE/helm helm
   only:
     changes:
@@ -29,7 +29,7 @@ helm:
 deploy:
   stage: publish
   script:
-    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+    - echo $CI_REGISTRY_PASSWORD | docker login -u $CI_REGISTRY_USER  --password-stdin $CI_REGISTRY
     - build $CI_REGISTRY_IMAGE/deploy deploy
   only:
     changes:
