@@ -2,7 +2,7 @@ stages:
   - publish
 
 image:
-  name: $CI_REGISTRY_IMAGE/docker@sha256:606d10cd175ec6a61fbf1ebe42a5a599ac3b63f50ad6af2025d6dc9d1d8c7533
+  name: $CI_REGISTRY_IMAGE/docker@sha256:57b2951a1dd657050b23c114303f76fd30278b3119718d550d514bf1e8bd40b3
 
 
 docker:
