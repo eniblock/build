@@ -16,4 +16,5 @@ ADD dockerhublogin /usr/local/bin/
 RUN chmod a+x /usr/local/bin/*
 ENV BUILDKITD_FLAGS=--oci-worker-no-process-sandbox \
   BUILD_CACHE=true
+ENTRYPOINT [ "/usr/local/bin/dockerhublogin" ]
 USER user:user

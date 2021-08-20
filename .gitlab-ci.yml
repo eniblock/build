@@ -19,7 +19,6 @@ docker:
 helm:
   stage: publish
   script:
-    - cat /usr/local/bin/dockerhublogin
     - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
     - build $CI_REGISTRY_IMAGE/helm helm
   only:
