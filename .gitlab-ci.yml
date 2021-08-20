@@ -2,7 +2,7 @@ stages:
   - publish
 
 image:
-  name: $CI_REGISTRY_IMAGE/docker:1.1.0
+  name: $CI_REGISTRY_IMAGE/docker:gle-it-136-fix-docker-rate-limit
 
 docker:
   stage: publish
