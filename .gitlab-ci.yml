@@ -20,6 +20,10 @@ docker:
 
 helm:
   stage: publish
+  image:
+    name: $CI_REGISTRY_IMAGE/docker@sha256:949f6b78c8392702b0788e200cbb9c5fe240408161245172ac923d0038d642d6
+    entrypoint:
+      - /usr/local/bin/dockerhublogin
   script:
     - set -x
     - cat ~/.docker/config.json || true
