@@ -12,9 +12,8 @@ RUN wget -O /usr/local/bin/yq https://github.com/mikefarah/yq/releases/download/
 ADD build_with_helm_tag /usr/local/bin/
 ADD build_with_pipeline_id /usr/local/bin/
 ADD build /usr/local/bin/
+ADD dockerhublogin /usr/local/bin/
 RUN chmod a+x /usr/local/bin/*
 ENV BUILDKITD_FLAGS=--oci-worker-no-process-sandbox \
   BUILD_CACHE=true
-COPY entrypoint.sh /
-ENTRYPOINT [ "/entrypoint.sh" ]
 USER user:user

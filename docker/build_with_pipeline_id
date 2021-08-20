@@ -6,6 +6,8 @@ image=$1
 context=${2:-.}
 dockerfile=${3:-$context}
 
+dockerhublogin
+
 if [ -z "$CI_COMMIT_TAG" ]; then
   version=$CI_COMMIT_REF_SLUG
   images=$image:$version,$image:$version.$CI_PIPELINE_IID
