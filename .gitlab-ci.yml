@@ -6,6 +6,8 @@ image:
   entrypoint:
     - /usr/local/bin/dockerhublogin
 
+variables:
+  BUILD_CACHE: "false"
 
 docker:
   stage: publish
