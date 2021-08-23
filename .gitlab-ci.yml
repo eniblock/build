@@ -2,7 +2,7 @@ stages:
   - publish
 
 image:
-  name: registry.gitlab.com/the-blockchain-xdev/xdev-product/build-images:1.4.0
+  name: registry.gitlab.com/the-blockchain-xdev/xdev-product/build-images/docker:1.4.0
 
 docker:
   stage: publish
