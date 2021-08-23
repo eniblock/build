@@ -2,7 +2,7 @@ stages:
   - publish
 
 image:
-  name: $CI_REGISTRY_IMAGE/docker@sha256:22baae503dc0be76d10d7a06a2f4543ec5bc814f0c83310fc864ccaae8cec05a
+  name: registry.gitlab.com/the-blockchain-xdev/xdev-product/build-images:1.4.0
 
 docker:
   stage: publish
