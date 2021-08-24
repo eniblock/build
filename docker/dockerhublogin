@@ -3,7 +3,7 @@
 set -e
 
 if [ -n "$DOCKER_HUB_PASSWORD" ]; then
-  echo $DOCKER_HUB_PASSWORD | docker login -u $DOCKER_HUB_USER --password-stdin
+  echo $DOCKER_HUB_PASSWORD | docker login -u $DOCKER_HUB_USER --password-stdin >&2
 fi
 
 exec "$@"
