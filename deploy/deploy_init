@@ -1,4 +1,5 @@
 #!/bin/bash
+set -e
 dockerhublogin
 gcloud auth activate-service-account --key-file $GOOGLE_APPLICATION_CREDENTIALS
 # terraform can't get the module from the ssh url, so we patch the gitlab's url globally
