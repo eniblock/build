@@ -14,7 +14,7 @@ RUN cd /usr/local/bin \
   && curl https://releases.hashicorp.com/vault/1.5.3/vault_1.5.3_linux_amd64.zip | unzip - \
   && chmod a+x vault
 RUN cd /usr/local/bin \
-  && curl https://releases.hashicorp.com/terraform/1.0.5/terraform_1.0.5_linux_amd64.zip | unzip - \
+  && curl -sL https://releases.hashicorp.com/terraform/1.0.5/terraform_1.0.5_linux_amd64.zip | unzip - \
   && chmod a+x terraform
 RUN curl -sL https://get.helm.sh/helm-v3.6.3-linux-amd64.tar.gz | tar xvzC /usr/bin --strip-components=1 linux-amd64/helm
 RUN curl -fsSL https://dl.k8s.io/release/v1.20.2/bin/linux/amd64/kubectl > /usr/local/bin/kubectl \
