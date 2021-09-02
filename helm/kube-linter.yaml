@@ -15,8 +15,8 @@ checks:
     - unsafe-proc-mount
     - wildcard-in-rules
     - writable-host-mount
+    - exposed-services
     # TODO: activate these, once ready
-    # - exposed-services
     # - no-readiness-probe
     # - no-rolling-update-strategy
 customChecks:
