@@ -1,9 +1,10 @@
 FROM golang:alpine as kube-linter-builder
 WORKDIR /app
-RUN apk add git make bash
-# TODO: use official image once https://github.com/stackrox/kube-linter/pull/202 and
-# https://github.com/stackrox/kube-linter/pull/203 are merged
-RUN git clone -b xdev https://github.com/glehmann/kube-linter.git .
+RUN apk add git make bash patch
+# TODO: use official image once https://github.com/stackrox/kube-linter/pull/206 is merged
+RUN git clone -b 0.2.3 https://github.com/stackrox/kube-linter.git .
+COPY kube-linter.patch ./
+RUN patch -p1 < kube-linter.patch
 RUN make generated-srcs
 
 FROM alpine

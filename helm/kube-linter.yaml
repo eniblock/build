@@ -16,6 +16,7 @@ checks:
     - wildcard-in-rules
     - writable-host-mount
     - exposed-services
+    - non-isolated-pod
     # TODO: activate these, once ready
     # - no-readiness-probe
     # - no-rolling-update-strategy
