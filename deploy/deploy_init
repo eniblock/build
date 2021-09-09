@@ -5,7 +5,7 @@ gcloud auth activate-service-account --key-file $GOOGLE_APPLICATION_CREDENTIALS
 # terraform can't get the module from the ssh url, so we patch the gitlab's url globally
 git config --global url."https://gitlab-ci-token:${CI_JOB_TOKEN}@gitlab.com/".insteadOf "ssh://git@gitlab.com/"
 terraform init -input=false
-[[ "$CI_ENVIRONMENT_NAME" != "testing" ]] && terraform workspace select $CI_ENVIRONMENT_NAME
+terraform workspace select $CI_ENVIRONMENT_NAME
 terraform apply -input=false -auto-approve
 docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
 helm registry login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
