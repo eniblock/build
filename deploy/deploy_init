@@ -16,3 +16,4 @@ terraform workspace select $CI_ENVIRONMENT_NAME
 terraform apply -input=false -auto-approve
 docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
 helm registry login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+chmod 600 $KUBECONFIG
