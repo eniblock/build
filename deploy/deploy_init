@@ -1,6 +1,13 @@
 #!/bin/bash
 set -e
 dockerhublogin
+
+if [ -z "$GOOGLE_APPLICATION_CREDENTIALS" ]; then
+    echo "GOOGLE_APPLICATION_CREDENTIALS env var is not defined." >&2
+    echo "Are you trying to deploy an environment from a non protected branch?" >&2
+    exit 1
+fi
+
 gcloud auth activate-service-account --key-file $GOOGLE_APPLICATION_CREDENTIALS
 # terraform can't get the module from the ssh url, so we patch the gitlab's url globally
 git config --global url."https://gitlab-ci-token:${CI_JOB_TOKEN}@gitlab.com/".insteadOf "ssh://git@gitlab.com/"
