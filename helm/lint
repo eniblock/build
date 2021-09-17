@@ -1,3 +1,8 @@
 #!/bin/sh
 
-helm template test-release "$@" | kube-linter lint --config /etc/kube-linter.yaml -
+set -e
+
+helm template test-release "$@" > /tmp/out.yaml
+
+cat /tmp/out.yaml | kubeval --strict --schema-location file:///
+cat /tmp/out.yaml | kube-linter lint --config /etc/kube-linter.yaml -

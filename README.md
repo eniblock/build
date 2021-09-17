@@ -20,6 +20,21 @@ A docker image to build helm packages. It comes with a `build` script to ease th
 
 The repository to use is `registry.gitlab.com/xdev-tech/build/helm:1.5.0`
 
+### Generated kubeval schemas
+
+Install `openapi2jsonschema` with `pip install openapi2jsonschema`.
+
+Connect to a kubernetes cluster and expose its API with
+
+```
+kubectl proxy --port=8080
+```
+and run
+
+~~~
+openapi2jsonschema http://localhost:8080/openapi/v2 -o helm/master-standalone-strict --stand-alone --strict --kubernetes --expanded
+~~~
+
 ## deploy
 
 A docker image to run the deployments.
