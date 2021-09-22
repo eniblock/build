@@ -23,8 +23,7 @@ if [ $yamllint_exit != 0 ]; then
   echo -e '\033[0;31myamllint check failed\033[0m'
 fi
 if [ $kubelinter_exit != 0 ]; then
-  bat --style=numbers,grid --color=always /tmp/k8s.yaml
-  echo -e '\033[0;31mkube-inetr check failed\033[0m'
+  echo -e '\033[0;31mkube-linter check failed\033[0m'
 fi
 if [ $kubeval_exit != 0 ]; then
   echo -e '\033[0;31mkubeval check failed\033[0m'
