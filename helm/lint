@@ -17,14 +17,19 @@ if [[ $yamllint_exit != 0 || $kubelinter_exit != 0 || $kubeval_exit != 0 ]]; the
   TERM=xterm bat --paging=never --color=always --style=numbers,grid /tmp/k8s.yaml
 fi
 
-cat /tmp/kubeval.out /tmp/kube-linter.out /tmp/yamllint.out
+cat /tmp/kubeval.out /tmp/yamllint.out
 
 if [ $yamllint_exit != 0 ]; then
   echo -e '\033[0;31myamllint check failed\033[0m'
 fi
+
 if [ $kubelinter_exit != 0 ]; then
-  echo -e '\033[0;31mkube-linter check failed\033[0m'
+  # use kube-linters colors, once https://github.com/stackrox/kube-linter/issues/205 is done
+  echo -e '\033[0;31m' $(cat /tmp/kube-linter.out) '\n\033[0;31mkube-linter check failed\033[0m'
+else
+  cat /tmp/kube-linter.out
 fi
+
 if [ $kubeval_exit != 0 ]; then
   echo -e '\033[0;31mkubeval check failed\033[0m'
 fi
