@@ -12,8 +12,9 @@ kubelinter_exit=$?
 
 yamllint -c /etc/yamllint.yaml -f colored /tmp/k8s.yaml 2>&1 > /tmp/yamllint.out
 yamllint_exit=$?
+yamllint_count=`wc -l /tmp/yamllint.out | cut -d ' ' -f1`
 
-if [[ $yamllint_exit != 0 || $kubelinter_exit != 0 || $kubeval_exit != 0 ]]; then
+if [[ $yamllint_exit != 0 || $kubelinter_exit != 0 || $kubeval_exit != 0 || $yamllint_count != 0 ]]; then
   TERM=xterm bat --paging=never --color=always --style=numbers,grid --wrap=never /tmp/k8s.yaml
 fi
 
