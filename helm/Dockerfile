@@ -31,7 +31,7 @@ COPY --from=kubeval-builder /app/bin/kubeval /usr/local/bin/
 COPY master-standalone-strict/ /master-standalone-strict/
 COPY kube-linter.yaml /etc/
 COPY yamllint.yaml /etc/
-ADD build lint /usr/local/bin/
+ADD build build_std lint /usr/local/bin/
 RUN chmod a+x /usr/local/bin/*
 ENV HELM_EXPERIMENTAL_OCI=1
 WORKDIR /app
