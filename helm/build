@@ -26,10 +26,12 @@ fi
 tmp_chart=`mktemp`
 cp $helmdir/Chart.yaml $tmp_chart
 
-yq e -i ".appVersion = \"$appVersion\"" $helmdir/Chart.yaml
-for path in $patch_values; do
-  yq e -i "$path = \"$appVersion\"" $helmdir/values.yaml
-done
+if [[ patch_values != "NO_PATCH" ]]; then
+  yq e -i ".appVersion = \"$appVersion\"" $helmdir/Chart.yaml
+  for path in $patch_values; do
+    yq e -i "$path = \"$appVersion\"" $helmdir/values.yaml
+  done
+fi
 helm chart save ./$helmdir $image:$version
 helm chart push $image:$version
 
