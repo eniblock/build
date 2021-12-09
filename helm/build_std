@@ -28,7 +28,7 @@ fi
 tmp_chart=`mktemp`
 cp $helmdir/Chart.yaml $tmp_chart
 
-if [[ patch_values != "NO_PATCH" ]]; then
+if [ $patch_values -ne "NO_PATCH" ]; then
   yq e -i ".appVersion = \"$appVersion\"" $helmdir/Chart.yaml
   for path in $patch_values; do
     yq e -i "$path = \"$appVersion\"" $helmdir/values.yaml
