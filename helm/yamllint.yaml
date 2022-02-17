@@ -2,5 +2,4 @@
 extends: relaxed
 rules:
   line-length: disable
-  trailing-spaces:
-    level: warning
+  trailing-spaces: disable
