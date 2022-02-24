@@ -17,6 +17,7 @@ RUN make
 
 FROM alpine
 RUN apk add \
+  bash \
   curl \
   docker-cli \
   bat \

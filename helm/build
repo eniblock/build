@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 set -e
 
@@ -25,13 +25,18 @@ fi
 # copy the Chart in the safe place
 tmp_chart=`mktemp`
 cp $helmdir/Chart.yaml $tmp_chart
+tmp_values=`mktemp`
+cp $helmdir/values.yaml $tmp_values
 
-if [ $patch_values -ne "NO_PATCH" ]; then
+if [[ "$patch_values" != *"NO_PATCH"* ]]; then
   yq e -i ".appVersion = \"$appVersion\"" $helmdir/Chart.yaml
-  for path in $patch_values; do
-    yq e -i "$path = \"$appVersion\"" $helmdir/values.yaml
-  done
 fi
+for path in $patch_values; do
+  if [ "$path" != "NO_PATCH" ]; then
+    yq e -i "$path = \"$appVersion\"" $helmdir/values.yaml
+  fi
+done
+
 helm chart save ./$helmdir $image:$version
 helm chart push $image:$version
 
@@ -42,3 +47,4 @@ if [ -z "$CI_COMMIT_TAG" ]; then
 fi
 
 cp $tmp_chart $helmdir/Chart.yaml
+cp $tmp_values $helmdir/values.yaml
