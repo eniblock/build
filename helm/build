@@ -28,6 +28,7 @@ cp $helmdir/Chart.yaml $tmp_chart
 tmp_values=`mktemp`
 cp $helmdir/values.yaml $tmp_values
 
+yq e -i ".version = \"$appVersion\"" $helmdir/Chart.yaml
 if [[ "$patch_values" != *"NO_PATCH"* ]]; then
   yq e -i ".appVersion = \"$appVersion\"" $helmdir/Chart.yaml
 fi
