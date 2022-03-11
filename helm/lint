@@ -2,7 +2,7 @@
 
 # set -x
 
-helm template test-release "$@" > /tmp/k8s.yaml  || exit 1
+helm template "$@" > /tmp/k8s.yaml  || exit 1
 
 cat /tmp/k8s.yaml | kubeval --strict --schema-location file:/// 2>&1 > /tmp/kubeval.out
 kubeval_exit=$?
