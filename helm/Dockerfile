@@ -6,7 +6,7 @@ COPY kubeval.patch ./
 RUN patch -p1 < kubeval.patch
 RUN make
 
-FROM alpine
+FROM alpine:3.15
 RUN apk add \
   bash \
   curl \
