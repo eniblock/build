@@ -16,7 +16,7 @@ RUN cd /usr/local/bin \
 RUN cd /usr/local/bin \
   && curl -sL https://releases.hashicorp.com/terraform/1.0.5/terraform_1.0.5_linux_amd64.zip | unzip - \
   && chmod a+x terraform
-RUN curl -sL https://get.helm.sh/helm-v3.6.3-linux-amd64.tar.gz | tar xvzC /usr/bin --strip-components=1 linux-amd64/helm
+RUN curl -sL https://get.helm.sh/helm-v3.8.1-linux-amd64.tar.gz | tar xvzC /usr/bin --strip-components=1 linux-amd64/helm
 RUN curl -fsSL https://dl.k8s.io/release/v1.20.2/bin/linux/amd64/kubectl > /usr/local/bin/kubectl \
   && chmod 755 /usr/local/bin/kubectl
 RUN curl -fsSL https://github.com/vmware-tanzu/carvel-kbld/releases/download/v0.29.0/kbld-linux-amd64 > /usr/local/bin/kbld \
