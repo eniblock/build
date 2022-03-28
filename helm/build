@@ -6,6 +6,7 @@ image=$1
 helmdir=$2
 patch_values=$3
 
+name=`yq eval .name $helmdir/Chart.yaml`
 version=`yq eval .version $helmdir/Chart.yaml`
 if [ -z "$CI_COMMIT_TAG" ]; then
   version=$version-$CI_COMMIT_REF_SLUG
