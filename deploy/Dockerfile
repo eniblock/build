@@ -25,4 +25,3 @@ RUN wget -O /usr/local/bin/yq https://github.com/mikefarah/yq/releases/download/
 ADD dockerhublogin /usr/local/bin/
 COPY kbldpp deploy_init /usr/local/bin/
 RUN chmod a+x /usr/local/bin/*
-ENV HELM_EXPERIMENTAL_OCI=1

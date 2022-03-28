@@ -25,5 +25,4 @@ COPY kube-linter.yaml /etc/
 COPY yamllint.yaml /etc/
 ADD build build_std lint /usr/local/bin/
 RUN chmod a+x /usr/local/bin/*
-ENV HELM_EXPERIMENTAL_OCI=1
 WORKDIR /app

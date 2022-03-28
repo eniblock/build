@@ -38,13 +38,13 @@ for path in $patch_values; do
   fi
 done
 
-helm chart save ./$helmdir $image:$version
-helm chart push $image:$version
+helm package ./$helmdir $image:$version
+helm push $image:$version
 
 if [ -z "$CI_COMMIT_TAG" ]; then
   version=$version.$CI_PIPELINE_IID
-  helm chart save $helmdir $image:$version
-  helm chart push $image:$version
+  helm package $helmdir $image:$version
+  helm push $image:$version
 fi
 
 cp $tmp_chart $helmdir/Chart.yaml
