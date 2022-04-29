@@ -23,5 +23,5 @@ RUN curl -fsSL https://github.com/vmware-tanzu/carvel-kbld/releases/download/v0.
   && chmod 755 /usr/local/bin/kbld
 RUN wget -O /usr/local/bin/yq https://github.com/mikefarah/yq/releases/download/v4.7.1/yq_linux_amd64
 ADD dockerhublogin /usr/local/bin/
-COPY kbldpp deploy_init helm_version /usr/local/bin/
+COPY kbldpp deploy_init helm_version get-tag /usr/local/bin/
 RUN chmod a+x /usr/local/bin/*
