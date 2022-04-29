@@ -1,5 +1,5 @@
 #!/bin/sh
-set -ex
+set -e
 
 earthly_config="/etc/.earthly/config.yml"
 if [ ! -f "$earthly_config" ]; then
