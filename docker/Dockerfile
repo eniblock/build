@@ -1,4 +1,4 @@
-FROM moby/buildkit:rootless
+FROM moby/buildkit:v0.10.4-rootless
 USER root
 RUN apk add \
   bash \
