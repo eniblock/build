@@ -41,7 +41,7 @@ if [ -z "$BUILDKIT_HOST" ]; then
     exit 1
   fi
 
-  echo "$EARTHLY_ADDITIONAL_BUILDKIT_CONFIG" >/etc/buildkitd.toml
+  echo "$EARTHLY_ADDITIONAL_BUILDKIT_CONFIG" >> /etc/buildkitd.toml
 
   export BUILDKIT_TCP_TRANSPORT_ENABLED=true
   EARTHLY_BUILDKIT_HOST="tcp://$(hostname):8372" # hostname is not recognized as local for this reason

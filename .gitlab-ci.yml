@@ -17,13 +17,9 @@ docker:
 
 earthly:
   stage: publish
-  variables:
-    EARTHLY_ADDITIONAL_BUILDKIT_CONFIG: |
-      [registry."cache.registry"]
-        http=true
   script:
     - echo $CI_REGISTRY_PASSWORD | docker login -u $CI_REGISTRY_USER  --password-stdin $CI_REGISTRY
-    - build $CI_REGISTRY_IMAGE/earthly earthly earthly --opt "buid-arg:EARTHLY_ADDITIONAL_BUILDKIT_CONFIG=$EARTHLY_ADDITIONAL_BUILDKIT_CONFIG"
+    - build $CI_REGISTRY_IMAGE/earthly earthly
   only:
     changes:
       - .gitlab-ci.yml
