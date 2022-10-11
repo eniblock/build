@@ -1,0 +1,12 @@
+name: Compute image tags
+description: Compute the tag to use when uploading images
+outputs:
+  tag:
+    description: "The tag to use"
+    value: ${{ steps.buildtag.outputs.tag }}
+runs:
+  using: "composite"
+  steps:
+    - id: buildtag
+      run: echo "::set-output name=tag::$(${{ github.action_path }}/buildtag)"
+      shell: bash
