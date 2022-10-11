@@ -1,0 +1,24 @@
+name: Compute image tags
+description: Compute the tag to use when uploading images
+inputs:
+  helmdir:
+    description: 'Directory of the helm chart to publish'
+    required: false
+    default: ''
+outputs:
+  tag:
+    description: "The tag to use"
+    value: ${{ steps.buildtag.outputs.tag }}
+runs:
+  using: "composite"
+  steps:
+    - id: buildtag
+      run: |
+        tag="$("${{ github.action_path }}/script.sh" "${{ inputs.helmdir }}")"
+        if test -z "${tag}"
+        then
+            exit 1
+        else
+            echo "::set-output name=tag::${tag}"
+        fi
+      shell: bash
