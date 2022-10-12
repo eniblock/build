@@ -1,0 +1,19 @@
+VERSION 0.6
+
+helmbuilder:
+    FROM alpine:3.15
+    RUN wget -q -O - https://get.helm.sh/helm-v3.8.1-linux-amd64.tar.gz | tar xvzC /usr/local/bin --strip-components=1 linux-amd64/helm
+    RUN wget -q -O /usr/local/bin/yq https://github.com/mikefarah/yq/releases/download/v4.7.1/yq_linux_amd64
+    COPY build /usr/local/bin/
+    RUN chmod a+x /usr/local/bin/*
+
+HELMBUILD:
+    COMMAND
+    FROM +helmbuilder
+    ARG tag=latest
+    ARG image
+    ARG helmdir
+    ARG patch_value
+    WORKDIR /app
+    COPY "${helmdir}" ./helm
+    RUN --secret registry_username --secret registry_password sh /usr/local/bin/build "${image}" "${tag}" "${registry_username}" "${registry_password}" ${patch_value}
