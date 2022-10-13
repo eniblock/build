@@ -9,7 +9,6 @@ helmbuilder:
 
 HELMBUILD:
     COMMAND
-    FROM +helmbuilder
     ARG tag=latest
     ARG image
     ARG helmdir
