@@ -7,7 +7,7 @@ helmbuilder:
     COPY build /usr/local/bin/
     RUN chmod a+x /usr/local/bin/*
 
-PREPAREHELM:
+PREPARE_HELM:
     COMMAND
     WORKDIR /app
     ARG helmdir
@@ -17,7 +17,7 @@ PREPAREHELM:
     END
     COPY "${helmdir}" ./helm
 
-HELMBUILD:
+PUBLISH_HELM:
     COMMAND
     ARG tag=latest
     ARG image
