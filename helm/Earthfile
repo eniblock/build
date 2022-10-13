@@ -7,12 +7,20 @@ helmbuilder:
     COPY build /usr/local/bin/
     RUN chmod a+x /usr/local/bin/*
 
+PREPAREHELM:
+    COMMAND
+    WORKDIR /app
+    ARG helmdir
+    ARG bring_dependencies=true
+    IF test "${bring_dependencies}" = "true"
+    RUN helm dependency update "${helmdir}"
+    END
+    COPY "${helmdir}" ./helm
+
 HELMBUILD:
     COMMAND
     ARG tag=latest
     ARG image
     ARG helmdir
     ARG patch_value
-    WORKDIR /app
-    COPY "${helmdir}" ./helm
     RUN --secret registry_username --secret registry_password sh /usr/local/bin/build "${image}" "${tag}" "${registry_username}" "${registry_password}" ${patch_value}
