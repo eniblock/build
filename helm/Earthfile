@@ -7,16 +7,6 @@ helmbuilder:
     COPY build /usr/local/bin/
     RUN chmod a+x /usr/local/bin/*
 
-PREPARE_HELM:
-    COMMAND
-    WORKDIR /app
-    ARG helmdir
-    ARG bring_dependencies=true
-    IF test "${bring_dependencies}" = "true"
-    RUN helm dependency update "${helmdir}"
-    END
-    COPY "${helmdir}" ./helm
-
 PUBLISH_HELM:
     COMMAND
     ARG tag=latest

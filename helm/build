@@ -39,5 +39,6 @@ for path in $patch_values; do
 done
 
 echo "${registry_password}" | helm registry login "${repository}" -u "${registry_username}" --password-stdin
+helm dependency update "./${helmdir}"
 helm package --version "${version}" "./${helmdir}"
 helm push "${name}-${version}.tgz" "oci://${repository}"
