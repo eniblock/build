@@ -12,6 +12,10 @@ outputs:
 runs:
   using: "composite"
   steps:
+    - uses: rlespinasse/slugify-value@v1.x
+      with:
+        key: GITHUB_REF_NAME
+        prefix: CI_
     - id: buildtag
       run: |
         tag="$("${{ github.action_path }}/script.sh" "${{ inputs.helmdir }}")"

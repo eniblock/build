@@ -2,7 +2,7 @@
 
 set -e
 
-COMMIT_REF_SLUG="${GITHUB_REF_NAME}"
+COMMIT_REF_SLUG="${CI_GITHUB_REF_NAME_SLUG}" # generated using rlespinasse/slugify-value@v1.x
 PIPELINE_ID="${GITHUB_RUN_NUMBER}"
 if echo "${GITHUB_REF}"|grep -q 'refs/tags/'
 then
