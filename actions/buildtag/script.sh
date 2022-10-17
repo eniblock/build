@@ -1,6 +1,6 @@
 #!/bin/bash
 
-set -e
+set -eu
 
 COMMIT_REF_SLUG="${CI_GITHUB_REF_NAME_SLUG}" # generated using rlespinasse/slugify-value@v1.x
 PIPELINE_ID="${GITHUB_RUN_NUMBER}"
