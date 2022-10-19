@@ -12,16 +12,29 @@ deps:
         curl
     COPY +terraform/terraform /usr/local/bin/
 
-TF_APPLY:
+RUN:
     COMMAND
     FROM +deps
     WORKDIR /tf
-    ARG tfdir
+    ARG tfdir=.
     COPY "${tfdir}" ./
-    ARG environment=dev
-    RUN --no-cache --secret google_application_credentials \
-        echo "$google_application_credentials" > /tmp/gac \
-        && gcloud auth activate-service-account --key-file /tmp/gac \
+    ARG --required environment
+    ARG --required command
+    ARG options
+    ENV GOOGLE_APPLICATION_CREDENTIALS=/tmp/gac.json
+    RUN --no-cache \
+        --mount type=secret,target=/tmp/gac.json,id=+secrets/gac \
+        gcloud auth activate-service-account --key-file /tmp/gac.json \
         && terraform init -input=false \
         && terraform workspace select "$environment" \
-        && terraform apply -input=false -auto-approve
+        && terraform $command $options
+
+PLAN:
+    COMMAND
+    ARG --required environment
+    DO +RUN --environment "$environment" --command plan
+
+APPLY:
+    COMMAND
+    ARG --required environment
+    DO +RUN  --environment "$environment" --command apply --options "-input=false -auto-approve"
