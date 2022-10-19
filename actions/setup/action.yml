@@ -1,4 +1,4 @@
-name: Init
+name: Setup
 description: Setup the default job configuration
 inputs:
   helmdir:
