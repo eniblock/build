@@ -8,33 +8,54 @@ deps:
     FROM gcr.io/google.com/cloudsdktool/cloud-sdk:405.0.0-alpine
     RUN gcloud components install gke-gcloud-auth-plugin
     RUN apk add \
+        age \
         bash \
-        curl
+        curl \
+        jq
     COPY +terraform/terraform /usr/local/bin/
 
-RUN:
+SETUP:
     COMMAND
     FROM +deps
     WORKDIR /tf
     ARG tfdir=.
     COPY "${tfdir}" ./
+    # a first init to cache de plugins
+    RUN terraform init -input=false -backend=false
     ARG --required environment
-    ARG --required command
-    ARG options
     ENV GOOGLE_APPLICATION_CREDENTIALS=/tmp/gac.json
     RUN --no-cache \
         --mount type=secret,target=/tmp/gac.json,id=+secrets/gac \
         gcloud auth activate-service-account --key-file /tmp/gac.json \
         && terraform init -input=false \
-        && terraform workspace select "$environment" \
-        && terraform $command $options
+        && terraform workspace select "$environment"
+
+RUN:
+    COMMAND
+    ARG --required command
+    ARG options
+    ARG output=/dev/stdout
+    RUN --no-cache \
+        --mount type=secret,target=/tmp/gac.json,id=+secrets/gac \
+        terraform $command $options > $output
 
 PLAN:
     COMMAND
+    ARG tfdir=.
     ARG --required environment
+    DO +SETUP --tfdir $tfdir --environment "$environment"
     DO +RUN --environment "$environment" --command plan
 
 APPLY:
     COMMAND
+    ARG tfdir=.
     ARG --required environment
+    DO +SETUP --tfdir $tfdir --environment "$environment"
     DO +RUN  --environment "$environment" --command apply --options "-input=false -auto-approve"
+
+OUTPUT:
+    COMMAND
+    ARG tfdir=.
+    ARG --required environment
+    DO +SETUP --tfdir $tfdir --environment "$environment"
+    DO +RUN  --environment "$environment" --command output
