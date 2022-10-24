@@ -21,6 +21,7 @@ deps:
 SETUP:
     COMMAND
     FROM +deps
+    WORKDIR /app
     RUN --no-cache --secret dockerhub_password \
         echo $dockerhub_password | docker login -u eniblock --password-stdin
     RUN --no-cache --secret github_token \
