@@ -4,6 +4,10 @@ vault:
     FROM hashicorp/vault:1.12
     SAVE ARTIFACT /bin/vault
 
+sops:
+    FROM mozilla/sops:v3.7-alpine
+    SAVE ARTIFACT /usr/local/bin/sops
+
 deps:
     FROM alpine/helm:3.10.1
     RUN apk add bash docker-cli
@@ -12,6 +16,7 @@ deps:
     RUN curl -fsSL https://github.com/vmware-tanzu/carvel-kbld/releases/download/v0.35.0/kbld-linux-amd64 > /usr/bin/kbld \
         && chmod 755 /usr/bin/kbld
     COPY +vault/vault /usr/bin/vault
+    COPY +sops/sops /usr/bin/sops
 
 SETUP:
     COMMAND
