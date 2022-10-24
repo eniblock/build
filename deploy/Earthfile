@@ -17,8 +17,8 @@ SETUP:
     COMMAND
     FROM +deps
     RUN --no-cache --secret dockerhub_password \
-        echo $dockerhub_password | docker login -u eniblock
+        echo $dockerhub_password | docker login -u eniblock --password-stdin
     RUN --no-cache --secret github_token \
-        echo $github_token | docker login -u eniblock ghcr.io
+        echo $github_token | docker login -u eniblock ghcr.io --password-stdin
     RUN --no-cache --secret github_token \
-        echo $github_token | helm registry login -u eniblock ghcr.io
+        echo $github_token | helm registry login -u eniblock ghcr.io --password-stdin
