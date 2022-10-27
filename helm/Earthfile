@@ -25,7 +25,8 @@ helmtools:
     RUN wget -q -O /usr/local/bin/yq https://github.com/mikefarah/yq/releases/download/v4.7.1/yq_linux_amd64
     RUN curl -sSL https://github.com/stackrox/kube-linter/releases/download/0.2.5/kube-linter-linux.tar.gz | tar xvzC /usr/local/bin
     COPY +kubeval/kubeval /usr/local/bin/
-    COPY --dir yamllint.yaml kube-linter.yaml master-standalone-strict/ /master-standalone-strict/
+    COPY master-standalone-strict/ /master-standalone-strict/
+    COPY --dir yamllint.yaml kube-linter.yaml /etc/
     COPY build lint /usr/local/bin/
     RUN chmod a+x /usr/local/bin/*
 
