@@ -1,0 +1,37 @@
+#!/bin/sh
+
+# set -x
+
+helm template "$@" > /tmp/k8s.yaml  || exit 1
+
+cat /tmp/k8s.yaml | kubeval --strict --schema-location file:/// 2>&1 > /tmp/kubeval.out
+kubeval_exit=$?
+
+script --return --quiet -c "cat /tmp/k8s.yaml | kube-linter lint --config /etc/kube-linter.yaml -" /dev/null 2>&1 > /tmp/kube-linter.out
+kubelinter_exit=$?
+
+yamllint -c /etc/yamllint.yaml -f colored /tmp/k8s.yaml 2>&1 > /tmp/yamllint.out
+yamllint_exit=$?
+yamllint_count=`wc -l /tmp/yamllint.out | cut -d ' ' -f1`
+
+if [[ $yamllint_exit != 0 || $kubelinter_exit != 0 || $kubeval_exit != 0 || $yamllint_count != 0 ]]; then
+  TERM=xterm bat --paging=never --color=always --style=numbers,grid --wrap=never /tmp/k8s.yaml
+fi
+
+cat /tmp/kubeval.out /tmp/kube-linter.out /tmp/yamllint.out
+
+if [ $yamllint_exit != 0 ]; then
+  echo -e '\033[0;31myamllint check failed\033[0m'
+fi
+if [ $kubelinter_exit != 0 ]; then
+  echo -e '\033[0;31mkube-linter check failed\033[0m'
+fi
+if [ $kubeval_exit != 0 ]; then
+  echo -e '\033[0;31mkubeval check failed\033[0m'
+fi
+
+if [[ $yamllint_exit != 0 || $kubelinter_exit != 0 || $kubeval_exit != 0 ]]; then
+  exit 1
+else
+  echo -e '\033[0;32mcheck succeeded :)\033[0m'
+fi
