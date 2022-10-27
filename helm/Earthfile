@@ -29,6 +29,17 @@ helmtools:
     COPY build lint /usr/local/bin/
     RUN chmod a+x /usr/local/bin/*
 
+LINT:
+    COMMAND
+    FROM +helmtools
+    WORKDIR /app
+    ARG helmdir
+    COPY "${helmdir}" ./helm
+    ARG registry=ghcr.io
+    RUN --secret registry_username --secret registry_password helm registry login -u "${registry_username}" -p "${registry_password}" "${registry}"
+    RUN helm dependency update ./helm
+    RUN cd helm && lint . --values values-dev.yaml
+
 PUBLISH_HELM:
     COMMAND
     FROM +helmtools
