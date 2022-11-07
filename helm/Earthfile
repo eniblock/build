@@ -35,7 +35,10 @@ LINT:
     FROM +helmtools
     WORKDIR /app
     ARG registry=ghcr.io
-    RUN --secret registry_username --secret registry_password helm registry login -u "${registry_username}" -p "${registry_password}" "${registry}"
+    ARG login=true
+    IF [ "$login" = "true" ]
+        RUN --secret registry_username --secret registry_password helm registry login -u "${registry_username}" -p "${registry_password}" "${registry}"
+    END
     ARG helmdir
     COPY "${helmdir}/Chart.yaml" ./helm/Chart.yaml
     RUN helm dependency update ./helm
