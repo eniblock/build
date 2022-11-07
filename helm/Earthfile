@@ -44,7 +44,7 @@ LINT:
     RUN helm dependency update .
     COPY "${helmdir}" ./
     ARG environment=dev
-    RUN lint . --values values-${environment}.yaml
+    RUN --no-cache lint . --values values-${environment}.yaml
 
 PUBLISH_HELM:
     COMMAND
