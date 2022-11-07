@@ -46,7 +46,7 @@ LINT:
     ARG environment=dev
     RUN --no-cache lint . --values values-${environment}.yaml
 
-PUBLISH_HELM:
+PUBLISH:
     COMMAND
     FROM +helmtools
     WORKDIR /app
@@ -56,3 +56,12 @@ PUBLISH_HELM:
     ARG patch_value
     ARG tag=latest
     RUN --secret registry_username --secret registry_password sh /usr/local/bin/build "${image}" "${tag}" "${registry_username}" "${registry_password}" ${patch_value}
+
+# this is deprecated, use PUBLISH
+PUBLISH_HELM:
+    COMMAND
+    ARG helmdir
+    ARG image
+    ARG patch_value
+    ARG tag=latest
+    DO +PUBLISH --helmdir=${helmdir} --image=${image} --patch_value=${patch_value} --tag=${tag}
