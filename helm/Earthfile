@@ -40,10 +40,11 @@ LINT:
         RUN --secret registry_username --secret registry_password helm registry login -u "${registry_username}" -p "${registry_password}" "${registry}"
     END
     ARG helmdir
-    COPY "${helmdir}/Chart.yaml" ./helm/Chart.yaml
-    RUN helm dependency update ./helm
-    COPY "${helmdir}" ./helm
-    RUN cd helm && lint . --values values-dev.yaml
+    COPY "${helmdir}/Chart.yaml" ./Chart.yaml
+    RUN helm dependency update .
+    COPY "${helmdir}" ./
+    ARG environment=dev
+    RUN lint . --values values-${environment}.yaml
 
 PUBLISH_HELM:
     COMMAND
