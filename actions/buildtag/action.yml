@@ -23,6 +23,6 @@ runs:
         then
             exit 1
         else
-            echo "::set-output name=tag::${tag}"
+            echo "tag=${tag}" >> $GITHUB_OUTPUT
         fi
       shell: bash
