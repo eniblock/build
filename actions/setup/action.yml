@@ -31,6 +31,11 @@ runs:
       global:
         disable_analytics: true
       EOF
+  - name: Indicate earthly that the cache is used in http
+    shell: bash
+    run: |
+       earthly config global.buildkit_additional_config "'[registry.\"cache.registry\"]
+          http = true'"
   - name: Login to Docker Hub
     uses: docker/login-action@v2
     with:
