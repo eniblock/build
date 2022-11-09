@@ -46,7 +46,7 @@ runs:
     with:
       username: ${{ inputs.dockerhub_username }}
       password: ${{ inputs.dockerhub_token }}
-  - uses: eniblock/build/actions/buildtag@main
+  - uses: eniblock/build/actions/buildtag@develop
     id: buildtag
     with:
       helmdir: ${{ inputs.helmdir }}
