@@ -2,23 +2,12 @@
 
 set -e
 
-image=$1
-tag=$2
+helmdir=.
+tag=$1
+patch_app_version=$2
+patch_values=$3
 
-registry_username=$3
-registry_password=$4
-
-patch_values=$5
-
-helmdir=helm
-repository=`dirname "${image}"`
-
-# sanity checks
 name=`yq eval .name "${helmdir}/Chart.yaml"`
-if [ "$name" != `basename "${image}"` ]; then
-  echo "image and chart name mismatch"
-  exit 1
-fi
 
 # play with a temporary directory so as not to mess up with the original chart
 TMP="$(mktemp -d)"
@@ -28,18 +17,12 @@ helmdir="${TMP}/$(basename "${helmdir}")"
 
 # patch the versions
 yq e -i ".version = \"$tag\"" "${helmdir}/Chart.yaml"
-if [[ "$patch_values" != *"NO_PATCH"* ]]; then
-  yq e -i ".appVersion = \"$tag\"" "${helmdir}/Chart.yaml"
+if [[ "$patch_app_version" == "true" ]]; then
+    yq e -i ".appVersion = \"$tag\"" "${helmdir}/Chart.yaml"
 fi
 for path in $patch_values; do
-  if [ "$path" != "NO_PATCH" ]; then
     yq e -i "$path = \"$tag\"" "${helmdir}/values.yaml"
-  fi
 done
 
-# publish the package
-echo "${registry_password}" | helm registry login "${repository}" -u "${registry_username}" --password-stdin
-rm -rf "${helmdir}/charts"
-helm dependency update "${helmdir}"
+# generate the package
 helm package --version "${tag}" "${helmdir}"
-helm push "${name}-${tag}.tgz" "oci://${repository}"

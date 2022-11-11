@@ -19,7 +19,6 @@ helmtools:
       bat \
       yamllint \
       util-linux
-    RUN wget -q https://github.com/rancher/k3d/releases/download/v4.4.1/k3d-linux-amd64 -O /usr/local/bin/k3d
     RUN wget -q https://dl.k8s.io/release/v1.20.2/bin/linux/amd64/kubectl -O /usr/local/bin/kubectl
     RUN curl -sSL https://get.helm.sh/helm-v3.8.1-linux-amd64.tar.gz | tar xvzC /usr/local/bin --strip-components=1 linux-amd64/helm
     RUN wget -q -O /usr/local/bin/yq https://github.com/mikefarah/yq/releases/download/v4.7.1/yq_linux_amd64
@@ -29,33 +28,47 @@ helmtools:
     COPY --dir yamllint.yaml kube-linter.yaml /etc/
     COPY build lint /usr/local/bin/
     RUN chmod a+x /usr/local/bin/*
+    WORKDIR /app
+
+BASE:
+    COMMAND
+    FROM +helmtools
+
+LOGIN:
+    COMMAND
+    ARG registry=ghcr.io
+    ARG username=eniblock
+    RUN --no-cache \
+        --secret registry_password \
+        helm registry login -u "${username}" -p "${registry_password}" "${registry}"
+
+UPDATE:
+    COMMAND
+    ARG helmdir=.
+    COPY "${helmdir}/Chart.yaml" ./Chart.yaml
+    RUN helm dependency update .
 
 LINT:
     COMMAND
-    FROM +helmtools
-    WORKDIR /app
-    ARG registry=ghcr.io
-    ARG login=true
-    IF [ "$login" = "true" ]
-        RUN --secret registry_username --secret registry_password helm registry login -u "${registry_username}" -p "${registry_password}" "${registry}"
-    END
-    ARG helmdir
-    COPY "${helmdir}/Chart.yaml" ./Chart.yaml
-    RUN helm dependency update .
+    ARG helmdir=.
     COPY "${helmdir}" ./
     ARG environment=dev
     RUN --no-cache lint . --values values-${environment}.yaml
 
+BUILD:
+    COMMAND
+    ARG helmdir=.
+    COPY "${helmdir}" ./
+    ARG patch_app_version=true
+    ARG patch_values
+    ARG --required tag
+    RUN /usr/local/bin/build "${tag}" "${patch_app_version}" "${patch_values}"
+
 PUBLISH:
     COMMAND
-    FROM +helmtools
-    WORKDIR /app
-    ARG helmdir
-    COPY "${helmdir}" ./helm
-    ARG image
-    ARG patch_value
-    ARG tag=latest
-    RUN --secret registry_username --secret registry_password sh /usr/local/bin/build "${image}" "${tag}" "${registry_username}" "${registry_password}" ${patch_value}
+    ARG repository
+    ARG package="*-*.tgz"
+    RUN helm push $package "oci://$(dirname $repository)"
 
 # this is deprecated, use PUBLISH
 PUBLISH_HELM:
@@ -64,4 +77,8 @@ PUBLISH_HELM:
     ARG image
     ARG patch_value
     ARG tag=latest
-    DO +PUBLISH --helmdir=${helmdir} --image=${image} --patch_value=${patch_value} --tag=${tag}
+    DO +BASE
+    DO +LOGIN
+    DO +UPDATE --helmdir=${helmdir}
+    DO +BUILD --helmdir=${helmdir} --patch_values=${patch_value} --tag=${tag}
+    DO +PUBLISH --repository=${image}
