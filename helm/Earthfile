@@ -46,7 +46,19 @@ UPDATE:
     COMMAND
     ARG helmdir=.
     COPY "${helmdir}/Chart.yaml" ./Chart.yaml
-    RUN helm dependency update .
+    ARG login=false
+    IF [ "${login}" = "true" ]
+        ARG registry=ghcr.io
+        ARG username=eniblock
+        # login and logout in the same RUN in order to not use --no-cache nor keep any credential
+        # in the cache
+        RUN --secret registry_password \
+            helm registry login -u "${username}" -p "${registry_password}" "${registry}" \
+            && helm dependency update . \
+            && helm registry logout "${registry}"
+    ELSE
+        RUN helm dependency update .
+    END
 
 LINT:
     COMMAND
