@@ -22,7 +22,7 @@ runs:
   - name: Install earthly
     uses: earthly/actions-setup@v1
     with:
-      version: v0.6.23
+      version: v0.6.29
   - name: Disable earthly analytics
     shell: bash
     run: |
