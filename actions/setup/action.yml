@@ -20,9 +20,9 @@ runs:
   steps:
   - uses: actions/checkout@v2
   - name: Install earthly
-    uses: earthly/actions-setup@79c1a7ec26c371d868724182ec98d7434b18521f # the last tag v1.0.1 does not deal with range for now
+    uses: earthly/actions-setup@v1
     with:
-      version: 0.6.*
+      version: v0.6.23
   - name: Disable earthly analytics
     shell: bash
     run: |
