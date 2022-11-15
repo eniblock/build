@@ -48,7 +48,7 @@ runs:
   - name: Slugify some variables
     shell: bash
     run: |
-      cat <<"EOF" >> $GITHUB_ENV
+      cat <<EOF >> $GITHUB_ENV
       GITHUB_REPOSITORY_SLUG=$(slugify --max-length 63 ${{ github.repository }})
       GITHUB_JOB_SLUG=$(slugify --max-length 63 ${{ github.job }})
       GITHUB_REF_NAME_SLUG=$(slugify --max-length 63 ${{ github.ref_name }})
@@ -57,7 +57,7 @@ runs:
     if: inputs.default_earthly_cache == 'true'
     shell: bash
     run: |
-      cat <<"EOF" >> $GITHUB_ENV
+      cat <<EOF >> $GITHUB_ENV
       EARTHLY_MAX_REMOTE_CACHE=true
       EARTHLY_REMOTE_CACHE=cache.registry/${GITHUB_REPOSITORY_SLUG}/${GITHUB_JOB_SLUG}:${GITHUB_REF_NAME_SLUG}
       EARTHLY_CACHE_FROM=cache.registry/${GITHUB_REPOSITORY_SLUG}/${GITHUB_JOB_SLUG}:develop
