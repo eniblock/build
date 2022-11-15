@@ -54,7 +54,7 @@ runs:
       GITHUB_REF_NAME_SLUG=$(slugify --max-length 63 ${{ github.ref_name }})
       EOF
   - name: Export earthly cache default configuration
-    if: inputs.default_earthly_cache == "true"
+    if: inputs.default_earthly_cache == 'true'
     shell: bash
     run: |
       cat <<"EOF" >> $GITHUB_ENV
