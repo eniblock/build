@@ -11,6 +11,8 @@ inputs:
   dockerhub_token:
     required: true
     default: ''
+  default_earthly_cache:
+    default: "true"
 outputs:
   tag:
     description: "The tag to use"
@@ -40,7 +42,28 @@ runs:
     shell: bash
     run: |
       echo "FORCE_COLOR=1" >> $GITHUB_ENV
-      echo "EARTHLY_MAX_REMOTE_CACHE=true" >> $GITHUB_ENV
+  - name: Install python-slugify
+    shell: bash
+    run: pip install python-slugify
+  - name: Slugify some variables
+    shell: bash
+    run: |
+      cat <<"EOF" >> $GITHUB_ENV
+      GITHUB_REPOSITORY_SLUG=$(slugify --max-length 63 ${{ github.repository }})
+      GITHUB_JOB_SLUG=$(slugify --max-length 63 ${{ github.job }})
+      GITHUB_REF_NAME_SLUG=$(slugify --max-length 63 ${{ github.ref_name }})
+      EOF
+  - name: Export earthly cache default configuration
+    if: inputs.default_earthly_cache == "true"
+    shell: bash
+    run: |
+      cat <<"EOF" >> $GITHUB_ENV
+      EARTHLY_MAX_REMOTE_CACHE=true
+      EARTHLY_REMOTE_CACHE=cache.registry/${GITHUB_REPOSITORY_SLUG}/${GITHUB_JOB_SLUG}:${GITHUB_REF_NAME_SLUG}
+      EARTHLY_CACHE_FROM=cache.registry/${GITHUB_REPOSITORY_SLUG}/${GITHUB_JOB_SLUG}:develop
+      EARTHLY_STRICT=true
+      EARTHLY_PUSH=true
+      EOF
   - name: Login to Docker Hub
     uses: docker/login-action@v2
     with:
