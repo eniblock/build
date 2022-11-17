@@ -36,8 +36,10 @@ TAG_DEPLOYED:
     ARG --required repositories
     ARG --required tag
     ARG --required environment
-    FOR repository IN ${repositories}
-        RUN docker pull ${repository}:${tag} \
-            && docker tag ${repository}:${tag} ${repository}:deployed-in-${environment} \
-            && docker push ${repository}:deployed-in-${environment}
+    WITH DOCKER
+        FOR repository IN ${repositories}
+            RUN docker pull ${repository}:${tag} \
+                && docker tag ${repository}:${tag} ${repository}:deployed-in-${environment} \
+                && docker push ${repository}:deployed-in-${environment}
+        END
     END
