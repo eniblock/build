@@ -8,6 +8,10 @@ sops:
     FROM mozilla/sops:v3.7-alpine
     SAVE ARTIFACT /usr/local/bin/sops
 
+buildx:
+    FROM docker/buildx-bin
+    SAVE ARTIFACT /buildx
+
 deps:
     FROM alpine/helm:3.10.1
     RUN apk add bash docker-cli
@@ -19,6 +23,7 @@ deps:
         && chmod 755 /usr/bin/yq
     COPY +vault/vault /usr/bin/vault
     COPY +sops/sops /usr/bin/sops
+    COPY +buildx/buildx /usr/libexec/docker/cli-plugins/docker-buildx
 
 SETUP:
     COMMAND
@@ -30,3 +35,11 @@ SETUP:
         echo $github_token | docker login -u eniblock ghcr.io --password-stdin
     RUN --no-cache --secret github_token \
         echo $github_token | helm registry login -u eniblock ghcr.io --password-stdin
+
+TAG_DEPLOYED:
+    ARG --required repositories
+    ARG --required tag
+    ARG --required environment
+    FOR repository IN ${repositories}
+        RUN docker buildx imagetools create ${repository}:${tag} --tag ${repository}:deployed-in-${environment}
+    END
