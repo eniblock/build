@@ -37,6 +37,7 @@ SETUP:
         echo $github_token | helm registry login -u eniblock ghcr.io --password-stdin
 
 TAG_DEPLOYED:
+    COMMAND
     ARG --required repositories
     ARG --required tag
     ARG --required environment
