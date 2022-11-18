@@ -28,6 +28,7 @@ SETUP:
         --mount type=secret,target=/tmp/gac.json,id=+secrets/gac \
         gcloud auth activate-service-account --key-file /tmp/gac.json \
         && terraform init -input=false \
+        && { terraform workspace list | grep -q "\b${environment}\b" || terraform workspace new "${environment}" ; } \
         && terraform workspace select "$environment"
 
 RUN:
