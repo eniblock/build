@@ -20,7 +20,7 @@ SETUP:
     WORKDIR /tf
     ARG tfdir=.
     COPY "${tfdir}" ./
-    # a first init to cache de plugins
+    # a first init to cache the plugins
     RUN terraform init -input=false -backend=false
     ARG --required environment
     ENV GOOGLE_APPLICATION_CREDENTIALS=/tmp/gac.json
