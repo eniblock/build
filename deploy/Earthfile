@@ -8,9 +8,9 @@ sops:
     FROM mozilla/sops:v3.7-alpine
     SAVE ARTIFACT /usr/local/bin/sops
 
-buildx:
-    FROM docker/buildx-bin
-    SAVE ARTIFACT /buildx
+crane:
+    FROM gcr.io/go-containerregistry/crane:v0.12.1
+    SAVE ARTIFACT /ko-app/crane
 
 deps:
     FROM alpine/helm:3.10.1
@@ -23,7 +23,7 @@ deps:
         && chmod 755 /usr/bin/yq
     COPY +vault/vault /usr/bin/vault
     COPY +sops/sops /usr/bin/sops
-    COPY +buildx/buildx /usr/libexec/docker/cli-plugins/docker-buildx
+    COPY +crane/crane /usr/bin/crane
 
 SETUP:
     COMMAND
@@ -42,5 +42,5 @@ TAG_DEPLOYED:
     ARG --required tag
     ARG --required environment
     FOR repository IN ${repositories}
-        RUN docker buildx imagetools create ${repository}:${tag} --tag ${repository}:deployed-in-${environment}
+        RUN crane tag ${repository}:${tag} deployed-in-${environment}
     END
