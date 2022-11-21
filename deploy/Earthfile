@@ -44,3 +44,11 @@ TAG_DEPLOYED:
     FOR repository IN ${repositories}
         RUN crane tag ${repository}:${tag} deployed-in-${environment}
     END
+
+TAG_DEPLOYED2:
+    COMMAND
+    ARG --required images
+    ARG --required environment
+    FOR image IN ${images}
+        RUN crane tag ${image} deployed-in-${environment}
+    END
