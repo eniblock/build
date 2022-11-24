@@ -5,6 +5,8 @@ inputs:
     description: 'Directory of the helm chart to publish'
     required: false
     default: ''
+  raw_version_on_branch:
+    default: ''
 outputs:
   tag:
     description: "The tag to use"
@@ -18,7 +20,7 @@ runs:
         prefix: CI_
     - id: buildtag
       run: |
-        tag="$("${{ github.action_path }}/script.sh" "${{ inputs.helmdir }}")"
+        tag="$("${{ github.action_path }}/script.sh" "${{ inputs.helmdir }}")" "${{ inputs.raw_version_on_branch }}"
         if test -z "${tag}"
         then
             exit 1
