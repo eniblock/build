@@ -28,9 +28,10 @@ runs:
     with:
       fetch-depth: ${{ inputs.fetch-depth }}
   - name: Install earthly
-    uses: earthly/actions-setup@v1
+    uses: glehmann/actions-setup@cb813d48e7e2921cf4fcfbf9b86fd024113fd7a7
     with:
       version: v0.6.29
+      use-cache: "false"
   - name: Disable earthly analytics
     shell: bash
     run: |
