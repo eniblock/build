@@ -76,8 +76,14 @@ runs:
     with:
       username: ${{ inputs.dockerhub_username }}
       password: ${{ inputs.dockerhub_token }}
-  - uses: eniblock/build/actions/buildtag@develop
+  - name: Compute the tag to use in this job
     id: buildtag
-    with:
-      helmdir: ${{ inputs.helmdir }}
-      raw_version_on_branch: ${{ inputs.raw_version_on_branch}}
+    shell: bash
+    run: |
+      tag="$("${{ github.action_path }}/script.sh" "${{ inputs.helmdir }}" "${{ inputs.raw_version_on_branch }}")"
+      if test -z "${tag}"
+      then
+          exit 1
+      else
+          echo "tag=${tag}" >> $GITHUB_OUTPUT
+      fi
