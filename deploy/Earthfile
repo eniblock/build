@@ -14,7 +14,7 @@ crane:
 
 deps:
     FROM alpine/helm:3.10.1
-    RUN apk add bash docker-cli
+    RUN apk add age bash docker-cli
     RUN curl -fsSL https://dl.k8s.io/release/v1.25.0/bin/linux/amd64/kubectl > /usr/bin/kubectl \
         && chmod 755 /usr/bin/kubectl
     RUN curl -fsSL https://github.com/vmware-tanzu/carvel-kbld/releases/download/v0.35.0/kbld-linux-amd64 > /usr/bin/kbld \
