@@ -44,10 +44,6 @@ runs:
     run: |
        earthly config global.buildkit_additional_config "'[registry.\"cache.registry\"]
           http = true'"
-  - name: Export useful common environment variables
-    shell: bash
-    run: |
-      echo "FORCE_COLOR=1" >> $GITHUB_ENV
   - name: Install python-slugify
     shell: bash
     run: pip install python-slugify
@@ -59,6 +55,13 @@ runs:
       GITHUB_JOB_SLUG=$(slugify --max-length 63 ${{ github.job }})
       GITHUB_REF_NAME_SLUG=$(slugify --max-length 63 ${{ github.ref_name }})
       EOF
+  - name: Export earthly default configuration
+    shell: bash
+    run: |
+      cat <<EOF >> $GITHUB_ENV
+      FORCE_COLOR=1
+      EARTHLY_STRICT=true
+      EOF
   - name: Export earthly cache default configuration
     if: inputs.default_earthly_cache == 'true'
     shell: bash
@@ -67,7 +70,12 @@ runs:
       EARTHLY_MAX_REMOTE_CACHE=true
       EARTHLY_REMOTE_CACHE=cache.registry/${GITHUB_REPOSITORY_SLUG}/${GITHUB_JOB_SLUG}:${GITHUB_REF_NAME_SLUG}
       EARTHLY_CACHE_FROM=cache.registry/${GITHUB_REPOSITORY_SLUG}/${GITHUB_JOB_SLUG}:develop
-      EARTHLY_STRICT=true
+      EOF
+  - name: Export earthly push default configuration
+    if: github.actor != 'dependabot[bot]'
+    shell: bash
+    run: |
+      cat <<EOF >> $GITHUB_ENV
       EARTHLY_PUSH=true
       EOF
   - name: Login to Docker Hub
