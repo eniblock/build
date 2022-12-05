@@ -80,7 +80,7 @@ PUBLISH:
     COMMAND
     ARG repository
     ARG package="*-*.tgz"
-    RUN helm push $package "oci://$(dirname $repository)"
+    RUN --push helm push $package "oci://$(dirname $repository)"
 
 # this is deprecated, use PUBLISH
 PUBLISH_HELM:
