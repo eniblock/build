@@ -30,16 +30,16 @@ Please make sure it contains a line starting with 'version: some.version.number1
 EOF
     exit 1
   fi
-  if [ -z "$COMMIT_TAG" ]; then
-    version=$version-$COMMIT_REF_SLUG
-    echo $version.$PIPELINE_ID
-  elif [ "${GITHUB_REF}" = "ref/heads/${raw_version_on_branch}" ]; then
-    echo $version
-  else
+  if [ -n "$COMMIT_TAG" ]; then
     if [ "$version" != "$COMMIT_TAG" ]; then
       echo Chart version and tag mismatch: "$version" vs "$COMMIT_TAG" >> /dev/stderr
       exit 1
     fi
     echo $version
+  elif [ "${GITHUB_REF}" = "ref/heads/${raw_version_on_branch}" ]; then
+    echo $version
+  else
+    version=$version-$COMMIT_REF_SLUG
+    echo $version.$PIPELINE_ID
   fi
 fi
