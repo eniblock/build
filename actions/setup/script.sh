@@ -1,6 +1,8 @@
 #!/bin/bash
 
-set -eu
+set -eux
+
+env
 
 COMMIT_REF_SLUG="${GITHUB_REF_NAME_SLUG}"
 PIPELINE_ID="${GITHUB_RUN_NUMBER}"
