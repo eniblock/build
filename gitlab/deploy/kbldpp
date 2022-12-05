@@ -1,3 +1,0 @@
-#!/bin/bash
-dockerhublogin
-exec kbld -f -
