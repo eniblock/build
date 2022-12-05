@@ -1,42 +1,38 @@
-# build images
+# Build
 
-Build images, to be used in gitlab-ci
+Common stuffs to build other stuffs
 
-# Available images
+## Earthly
 
-## docker
+Some reusable code to import in your projects.
 
-A docker image to build docker images. It comes with several scripts to ease the build of docker images:
+### helm
 
-* `build`
-* `build_with_pipeline_id`
-* `build_with_helm_tag`
+Helper commands to lint, build and publish helm packages in earthly.
 
-The repository to use is `registry.gitlab.com/xdev-tech/build/docker:1.5.0`
+### terraform
 
-## helm
+Helper commands to apply terraform configuration in earthly.
 
-A docker image to build helm packages. It comes with a `build` script to ease the build of helm packages.
+### deploy
 
-The repository to use is `registry.gitlab.com/xdev-tech/build/helm:1.5.0`
+Helper commands to deploy a helm chart in earthly.
 
-### Generated kubeval schemas
+## Actions
 
-Install `openapi2jsonschema` with `pip install openapi2jsonschema`.
+### setup
 
-Connect to a kubernetes cluster and expose its API with
+A setup action that:
 
-```
-kubectl proxy --port=8080
-```
-and run
+* checks out the code
+* login the relevant repositories
+* configure earthly
+* generate a tag to be used in the generated artifacts
 
-~~~
-openapi2jsonschema http://localhost:8080/openapi/v2 -o helm/master-standalone-strict --stand-alone --strict --kubernetes --expanded
-~~~
+It accepts several inputs:
 
-## deploy
-
-A docker image to run the deployments.
-
-The repository to use is `registry.gitlab.com/xdev-tech/build/deploy:1.5.0`
+* `helmdir`: Directory of the helm chart to publish. It is used to grab the currently built version and build the artifact tag from that. If not provided, the generated tag does not include a version, just the current ref name and build id.
+* `dockerhub_token`: The dockerhub token to use.
+* `default_earthly_cache`: If true, configure some earthly environment variable with a reasonable default for most build. Set it explicitly to false if the default is not good enough for your cas.
+* `fetch-depth`: The git fetch depth. Defaults to `1` for performance reason, but can be set to any other value if the job needs some history. Use `-1` to get the whole history.
+* `raw_version_on_branch`: Just use the version from the helm chart for this branch. Useful to deploy from a specific tag for example.
