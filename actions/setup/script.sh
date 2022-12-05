@@ -1,8 +1,6 @@
 #!/bin/bash
 
-set -eux
-
-env
+set -eu
 
 COMMIT_REF_SLUG="${GITHUB_REF_NAME_SLUG}"
 PIPELINE_ID="${GITHUB_RUN_NUMBER}"
@@ -38,7 +36,7 @@ EOF
       exit 1
     fi
     echo $version
-  elif [ "${GITHUB_REF}" = "ref/heads/${raw_version_on_branch}" ]; then
+  elif [ "${GITHUB_REF}" = "refs/heads/${raw_version_on_branch}" ]; then
     echo $version
   else
     version=$version-$COMMIT_REF_SLUG
