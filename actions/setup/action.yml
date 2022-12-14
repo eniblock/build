@@ -17,6 +17,8 @@ inputs:
     default: '1'
   raw_version_on_branch:
     default: ''
+  earthly_cache_from_job:
+    default: ''
 outputs:
   tag:
     description: "The tag to use"
@@ -66,10 +68,15 @@ runs:
     if: inputs.default_earthly_cache == 'true'
     shell: bash
     run: |
+      EARTHLY_CACHE_FROM=cache.registry/${GITHUB_REPOSITORY_SLUG}/${GITHUB_JOB_SLUG}:develop
+      if [ -n "${{ inputs.earthly_cache_from_job }}" ]; then
+          EARTHLY_CACHE_FROM=${EARTHLY_CACHE_FROM},cache.registry/${GITHUB_REPOSITORY_SLUG}/$(slugify --max-length 63 ${{ inputs.earthly_cache_from_job }})
+      else
+      fi
       cat <<EOF >> $GITHUB_ENV
       EARTHLY_MAX_REMOTE_CACHE=true
       EARTHLY_REMOTE_CACHE=cache.registry/${GITHUB_REPOSITORY_SLUG}/${GITHUB_JOB_SLUG}:${GITHUB_REF_NAME_SLUG}
-      EARTHLY_CACHE_FROM=cache.registry/${GITHUB_REPOSITORY_SLUG}/${GITHUB_JOB_SLUG}:develop
+      EARTHLY_CACHE_FROM=${EARTHLY_CACHE_FROM}
       EOF
   - name: Export earthly push default configuration
     if: github.actor != 'dependabot[bot]'
