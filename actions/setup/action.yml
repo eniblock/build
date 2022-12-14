@@ -85,11 +85,7 @@ runs:
       EARTHLY_PUSH=true
       EOF
   - name: Login to Docker Hub
-    if: inputs.dockerhub_token != ''
-    uses: docker/login-action@v2
-    with:
-      username: ${{ inputs.dockerhub_username }}
-      password: ${{ inputs.dockerhub_token }}
+    uses: eniblock/dockerhub-login@master
   - name: Compute the tag to use in this job
     id: buildtag
     shell: bash
