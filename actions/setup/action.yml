@@ -100,7 +100,7 @@ runs:
     id: buildtag
     shell: bash
     run: |
-      helmdir="${{ inputs.helmdir }}"
+      helmdir=${HELM_DIR:-${{ inputs.helmdir }}}
       repository=$(basename ${{ github.repository }})
       if [ -z "${helmdir}" ] && [ -d "./helm/${repository}" ]; then
           helmdir=./helm/${repository}
