@@ -70,7 +70,7 @@ runs:
     run: |
       EARTHLY_CACHE_FROM=cache.registry/${GITHUB_REPOSITORY_SLUG}/${GITHUB_JOB_SLUG}:develop
       if [ -n "${{ inputs.earthly_cache_from_job }}" ]; then
-          EARTHLY_CACHE_FROM=${EARTHLY_CACHE_FROM},cache.registry/${GITHUB_REPOSITORY_SLUG}/$(slugify --max-length 63 ${{ inputs.earthly_cache_from_job }})
+          EARTHLY_CACHE_FROM=${EARTHLY_CACHE_FROM},cache.registry/${GITHUB_REPOSITORY_SLUG}/$(slugify --max-length 63 ${{ inputs.earthly_cache_from_job }}):${GITHUB_REF_NAME_SLUG}
       else
       fi
       cat <<EOF >> $GITHUB_ENV
