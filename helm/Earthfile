@@ -29,6 +29,7 @@ helmtools:
     COPY build lint /usr/local/bin/
     RUN chmod a+x /usr/local/bin/*
     WORKDIR /app
+    ENV YAMLLINT_CONFIG_FILE=/etc/yamllint.yaml
 
 BASE:
     COMMAND
