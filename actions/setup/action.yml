@@ -111,4 +111,5 @@ runs:
           exit 1
       else
           echo "tag=${tag}" >> $GITHUB_OUTPUT
+          echo "TAG=${tag}" >> $GITHUB_ENV
       fi
