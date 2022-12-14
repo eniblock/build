@@ -96,7 +96,7 @@ runs:
     run: |
       helmdir="${{ inputs.helmdir }}"
       repository=$(basename ${{ github.repository }})
-      if [ -z "${helmdir}" ] && [ -d "./helm/${repository}"]; then
+      if [ -z "${helmdir}" ] && [ -d "./helm/${repository}" ]; then
           helmdir=./helm/${repository}
       fi
       tag="$("${{ github.action_path }}/script.sh" "${helmdir}" "${{ inputs.raw_version_on_branch }}")"
