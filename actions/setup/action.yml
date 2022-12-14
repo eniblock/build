@@ -94,7 +94,12 @@ runs:
     id: buildtag
     shell: bash
     run: |
-      tag="$("${{ github.action_path }}/script.sh" "${{ inputs.helmdir }}" "${{ inputs.raw_version_on_branch }}")"
+      helmdir="${{ inputs.helmdir }}"
+      repository=$(basename ${{ github.repository }})
+      if [ -z "${helmdir}" ] && [ -d "./helm/${repository}"]; then
+          helmdir=./helm/${repository}
+      fi
+      tag="$("${{ github.action_path }}/script.sh" "${helmdir}" "${{ inputs.raw_version_on_branch }}")"
       if test -z "${tag}"
       then
           exit 1
