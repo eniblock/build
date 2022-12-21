@@ -52,10 +52,14 @@ runs:
   - name: Slugify some variables
     shell: bash
     run: |
+      GITHUB_REF_NAME_SLUG=$(cat <<"EOF" | slugify --max-length 63 --stdin
+      ${{ github.ref_name }}
+      EOF
+      )
       cat <<EOF >> $GITHUB_ENV
       GITHUB_REPOSITORY_SLUG=$(slugify --max-length 63 ${{ github.repository }})
       GITHUB_JOB_SLUG=$(slugify --max-length 63 ${{ github.job }})
-      GITHUB_REF_NAME_SLUG=$(slugify --max-length 63 ${{ github.ref_name }})
+      GITHUB_REF_NAME_SLUG=$GITHUB_REF_NAME_SLUG
       EOF
   - name: Export earthly default configuration
     shell: bash
