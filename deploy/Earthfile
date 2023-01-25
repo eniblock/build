@@ -9,7 +9,7 @@ sops:
     SAVE ARTIFACT /usr/local/bin/sops
 
 crane:
-    FROM gcr.io/go-containerregistry/crane:v0.12.1
+    FROM eniblock/crane:v0.12.1
     SAVE ARTIFACT /ko-app/crane
 
 deps:
