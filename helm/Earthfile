@@ -18,7 +18,9 @@ helmtools:
       docker-cli \
       bat \
       yamllint \
-      util-linux
+      util-linux \
+      py3-pip
+    RUN pip3 install ruamel.yaml
     RUN wget -q https://dl.k8s.io/release/v1.20.2/bin/linux/amd64/kubectl -O /usr/local/bin/kubectl
     RUN curl -sSL https://get.helm.sh/helm-v3.10.1-linux-amd64.tar.gz | tar xvzC /usr/local/bin --strip-components=1 linux-amd64/helm
     RUN wget -q -O /usr/local/bin/yq https://github.com/mikefarah/yq/releases/download/v4.7.1/yq_linux_amd64
@@ -26,8 +28,9 @@ helmtools:
     COPY +kubeval/kubeval /usr/local/bin/
     COPY master-standalone-strict/ /master-standalone-strict/
     COPY --dir yamllint.yaml kube-linter.yaml /etc/
-    COPY build lint /usr/local/bin/
+    COPY build lint split-yaml-docs /usr/local/bin/
     RUN chmod a+x /usr/local/bin/*
+    RUN mkdir /generated
     WORKDIR /app
     ENV YAMLLINT_CONFIG_FILE=/etc/yamllint.yaml
 

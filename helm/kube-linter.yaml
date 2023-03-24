@@ -6,6 +6,7 @@ checks:
     - run-as-non-root
     - unset-cpu-requirements
     - unset-memory-requirements
+    - non-existent-service-account
   include:
     - no-liveness-probe
     - access-to-create-pods

@@ -1,0 +1,20 @@
+#!/usr/bin/env python3
+import os
+import re
+import sys
+from ruamel.yaml import YAML
+
+yaml = YAML()
+ds = yaml.load_all(open(sys.argv[1]))
+
+source = ''
+for d in ds:
+    if d:
+        m = re.match('# Source: (.+)', d.ca.comment[1][0].value.strip())
+        if m:
+            source = m.group(1)
+            os.system(f'mkdir -p {os.path.dirname(source)}')
+            f = open(source, 'a')
+        if '/tests/' not in source:
+            f.write('---\n')
+            yaml.dump(d, f)
