@@ -12,11 +12,13 @@ crane:
     FROM eniblock/crane:v0.12.1
     SAVE ARTIFACT /ko-app/crane
 
+kubectl:
+    FROM rancher/kubectl:v1.25.9
+    SAVE ARTIFACT /bin/kubectl
+
 deps:
     FROM alpine/helm:3.10.1
     RUN apk add age bash docker-cli
-    RUN curl -fsSL https://dl.k8s.io/release/v1.25.0/bin/linux/amd64/kubectl > /usr/bin/kubectl \
-        && chmod 755 /usr/bin/kubectl
     RUN curl -fsSL https://github.com/vmware-tanzu/carvel-kbld/releases/download/v0.35.0/kbld-linux-amd64 > /usr/bin/kbld \
         && chmod 755 /usr/bin/kbld
     RUN curl -fsSL https://github.com/mikefarah/yq/releases/download/v4.7.1/yq_linux_amd64 > /usr/bin/yq \
@@ -24,6 +26,7 @@ deps:
     COPY +vault/vault /usr/bin/vault
     COPY +sops/sops /usr/bin/sops
     COPY +crane/crane /usr/bin/crane
+    COPY +kubectl/kubectl /usr/bin/kubectl
 
 SETUP:
     COMMAND
