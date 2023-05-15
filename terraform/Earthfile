@@ -5,7 +5,8 @@ terraform:
     SAVE ARTIFACT /bin/terraform
 
 deps:
-    FROM gcr.io/google.com/cloudsdktool/cloud-sdk:405.0.0-alpine
+    # FROM gcr.io/google.com/cloudsdktool/cloud-sdk:405.0.0-alpine
+    FROM eniblock/cloud-sdk:405.0.0-alpine
     RUN gcloud components install gke-gcloud-auth-plugin
     RUN apk add \
         age \
