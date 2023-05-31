@@ -8,7 +8,7 @@ cd /generated
 split-yaml-docs /tmp/k8s.yaml || exit 1
 
 yamls=`find . -name '*.yaml' | tr '\n' ' '`
-kubeval --strict --schema-location file:/// $yamls 2>&1 > /tmp/kubeval.out
+kubeval ${KUBEVAL_ARGS} --strict --schema-location file:/// $yamls 2>&1 > /tmp/kubeval.out
 kubeval_exit=$?
 
 script --return --quiet -c "kube-linter lint --config /etc/kube-linter.yaml $yamls" /dev/null 2>&1 > /tmp/kube-linter.out
