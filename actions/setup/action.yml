@@ -70,7 +70,6 @@ runs:
     run: |
       cat <<EOF >> $GITHUB_ENV
       FORCE_COLOR=1
-      EARTHLY_STRICT=true
       EARTHLY_NO_OUTPUT=true
       EOF
   - name: Export earthly cache default configuration
