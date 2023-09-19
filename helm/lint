@@ -1,6 +1,7 @@
 #!/bin/sh
 
 # set -x
+set -o pipefail
 
 helm template "$@" > /tmp/k8s.yaml  || exit 1
 
