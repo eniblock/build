@@ -13,8 +13,7 @@ for d in ds:
         m = re.match('# Source: (.+)', d.ca.comment[1][0].value.strip())
         if m:
             source = m.group(1)
-            os.system(f'mkdir -p {os.path.dirname(source)}')
-            f = open(source, 'a')
+            f = open(source.replace('/', '÷'), 'a')
         if '/tests/' not in source:
             f.write('---\n')
             yaml.dump(d, f)

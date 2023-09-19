@@ -8,13 +8,14 @@ cd /generated
 split-yaml-docs /tmp/k8s.yaml || exit 1
 
 yamls=`find . -name '*.yaml' | tr '\n' ' '`
-kubeval ${KUBEVAL_ARGS} --strict --schema-location file:/// $yamls 2>&1 > /tmp/kubeval.out
+
+kubeval ${KUBEVAL_ARGS} --strict --schema-location file:/// $yamls 2>&1 | sed -e 's@÷@/@g' > /tmp/kubeval.out
 kubeval_exit=$?
 
-script --return --quiet -c "kube-linter lint --config /etc/kube-linter.yaml $yamls" /dev/null 2>&1 > /tmp/kube-linter.out
+script --return --quiet -c "kube-linter lint --config /etc/kube-linter.yaml $yamls" /dev/null 2>&1 | sed -e 's@÷@/@g' > /tmp/kube-linter.out
 kubelinter_exit=$?
 
-yamllint -c /etc/yamllint.yaml -f colored $yamls 2>&1 > /tmp/yamllint.out
+yamllint -c /etc/yamllint.yaml -f colored $yamls 2>&1 | sed -e 's@÷@/@g' > /tmp/yamllint.out
 yamllint_exit=$?
 yamllint_count=`wc -l /tmp/yamllint.out | cut -d ' ' -f1`
 
