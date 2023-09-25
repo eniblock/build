@@ -47,9 +47,6 @@ runs:
     run: |
        earthly config global.buildkit_additional_config "'[registry.\"cache.registry\"]
           http = true'"
-  - name: Limit earthly parallelism to 4
-    shell: bash
-    run: earthly config global.buildkit_max_parallelism 4
   - name: Install python-slugify
     shell: bash
     run: pip install python-slugify
