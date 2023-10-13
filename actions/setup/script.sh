@@ -39,6 +39,9 @@ EOF
   elif [ "${GITHUB_REF}" = "refs/heads/${raw_version_on_branch}" ]; then
     echo $version
   else
+    if [ "$TAG_WITH_COMMIT_REF_SLUG" != "false" ]; then
+      version=$version.$COMMIT_REF_SLUG
+    fi
     echo $version.$PIPELINE_ID
   fi
 fi
