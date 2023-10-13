@@ -11,7 +11,7 @@ kubeval:
     SAVE ARTIFACT /app/bin/kubeval
 
 helmtools:
-    FROM alpine:3.15
+    FROM alpine:3.18
     RUN apk add \
       bash \
       curl \
@@ -19,8 +19,8 @@ helmtools:
       bat \
       yamllint \
       util-linux \
-      py3-pip
-    RUN pip3 install ruamel.yaml
+      py3-pip \
+      py3-ruamel.yaml
     RUN wget -q https://dl.k8s.io/release/v1.20.2/bin/linux/amd64/kubectl -O /usr/local/bin/kubectl
     RUN curl -sSL https://get.helm.sh/helm-v3.10.1-linux-amd64.tar.gz | tar xvzC /usr/local/bin --strip-components=1 linux-amd64/helm
     RUN wget -q -O /usr/local/bin/yq https://github.com/mikefarah/yq/releases/download/v4.7.1/yq_linux_amd64
