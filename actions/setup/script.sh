@@ -40,7 +40,7 @@ EOF
     echo $version
   else
     if [ "${TAG_WITH_COMMIT_REF_SLUG:-true}" == "true" ]; then
-      version=$version.$COMMIT_REF_SLUG
+      version=$version-$COMMIT_REF_SLUG
     fi
     echo $version.$PIPELINE_ID
   fi
