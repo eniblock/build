@@ -79,10 +79,10 @@ runs:
             EARTHLY_CACHE_FROM=${EARTHLY_CACHE_FROM},cache.registry/${GITHUB_REPOSITORY_SLUG}/$(slugify --max-length 63 ${{ inputs.earthly_cache_from_job }}):${GITHUB_REF_NAME_SLUG}
         fi
         cat <<EOF >> $GITHUB_ENV
-        EARTHLY_MAX_REMOTE_CACHE=true
-        EARTHLY_REMOTE_CACHE=cache.registry/${GITHUB_REPOSITORY_SLUG}/${GITHUB_JOB_SLUG}:${GITHUB_REF_NAME_SLUG}
-        EARTHLY_CACHE_FROM=${EARTHLY_CACHE_FROM}
-        EOF
+      EARTHLY_MAX_REMOTE_CACHE=true
+      EARTHLY_REMOTE_CACHE=cache.registry/${GITHUB_REPOSITORY_SLUG}/${GITHUB_JOB_SLUG}:${GITHUB_REF_NAME_SLUG}
+      EARTHLY_CACHE_FROM=${EARTHLY_CACHE_FROM}
+      EOF
       fi
   - name: Export earthly push default configuration
     if: github.actor != 'dependabot[bot]'
