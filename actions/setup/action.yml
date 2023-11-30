@@ -120,3 +120,8 @@ runs:
           echo "tag=${tag}" >> $GITHUB_OUTPUT
           echo "TAG=${tag}" >> $GITHUB_ENV
       fi
+  - name: run extra commands
+    shell: bash
+    run: |
+      echo $SETUP_EXTRA_COMMANDS > /tmp/extra_commands.sh
+      source /tmp/extra_commands.sh
