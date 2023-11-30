@@ -123,5 +123,5 @@ runs:
   - name: run extra commands
     shell: bash
     run: |
-      echo $SETUP_EXTRA_COMMANDS > /tmp/extra_commands.sh
+      echo "$SETUP_EXTRA_COMMANDS" > /tmp/extra_commands.sh
       source /tmp/extra_commands.sh
