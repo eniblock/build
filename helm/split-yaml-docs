@@ -5,6 +5,7 @@ import sys
 from ruamel.yaml import YAML
 
 yaml = YAML()
+yaml.preserve_quotes = True
 ds = yaml.load_all(open(sys.argv[1]))
 
 source = ''
