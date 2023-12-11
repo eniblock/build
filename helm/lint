@@ -23,7 +23,7 @@ yamllint_count=`wc -l /tmp/yamllint.out | cut -d ' ' -f1`
 yamllint_files=`grep -oE './[^:]+\.yaml' /tmp/yamllint.out | sort | uniq`
 kube_linter_files=`grep -oE './[^:]+\.yaml' /tmp/kube-linter.out | sort | uniq`
 kubeval_files=`grep "ERR -" /tmp/kubeval.out | grep -oE '[^: ]+\.yaml' | sort | uniq`
-files=`echo $kube_linter_files $kubeval_files $yamllint_files | sort | uniq`
+files=`echo $kube_linter_files $kubeval_files $yamllint_files | sort | uniq | sed -e 's@/@%@g'`
 
 if [[ $yamllint_exit != 0 || $kubelinter_exit != 0 || $kubeval_exit != 0 || $yamllint_count != 0 ]]; then
   TERM=xterm bat --paging=never --color=always --style=numbers,grid --wrap=never $files
