@@ -1,4 +1,4 @@
-VERSION 0.6
+VERSION 0.8
 
 vault:
     FROM hashicorp/vault:1.12
