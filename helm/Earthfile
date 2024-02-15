@@ -35,11 +35,11 @@ helmtools:
     ENV YAMLLINT_CONFIG_FILE=/etc/yamllint.yaml
 
 BASE:
-    COMMAND
+    FUNCTION
     FROM +helmtools
 
 LOGIN:
-    COMMAND
+    FUNCTION
     ARG registry=ghcr.io
     ARG username=eniblock
     RUN --no-cache \
@@ -47,7 +47,7 @@ LOGIN:
         helm registry login -u "${username}" -p "${registry_password}" "${registry}"
 
 UPDATE:
-    COMMAND
+    FUNCTION
     ARG helmdir=.
     COPY "${helmdir}/Chart.yaml" ./Chart.yaml
     ARG login=false
@@ -65,14 +65,14 @@ UPDATE:
     END
 
 LINT:
-    COMMAND
+    FUNCTION
     ARG helmdir=.
     COPY "${helmdir}" ./
     ARG environment=dev
     RUN lint . --values values-${environment}.yaml
 
 BUILD:
-    COMMAND
+    FUNCTION
     ARG helmdir=.
     COPY "${helmdir}" ./
     ARG patch_app_version=true
@@ -81,14 +81,14 @@ BUILD:
     RUN /usr/local/bin/build "${tag}" "${patch_app_version}" "${patch_values}"
 
 PUBLISH:
-    COMMAND
+    FUNCTION
     ARG repository
     ARG package="*-*.tgz"
     RUN --push helm push $package "oci://$(dirname $repository)"
 
 # this is deprecated, use PUBLISH
 PUBLISH_HELM:
-    COMMAND
+    FUNCTION
     ARG helmdir
     ARG image
     ARG patch_value

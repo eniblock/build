@@ -29,7 +29,7 @@ deps:
     COPY +kubectl/kubectl /usr/bin/kubectl
 
 SETUP:
-    COMMAND
+    FUNCTION
     FROM +deps
     WORKDIR /app
     RUN --no-cache --secret dockerhub_token \
@@ -40,7 +40,7 @@ SETUP:
         echo $github_token | helm registry login -u eniblock ghcr.io --password-stdin
 
 TAG_DEPLOYED:
-    COMMAND
+    FUNCTION
     ARG --required repositories
     ARG --required tag
     ARG --required environment
@@ -49,7 +49,7 @@ TAG_DEPLOYED:
     END
 
 TAG_DEPLOYED2:
-    COMMAND
+    FUNCTION
     ARG --required images
     ARG --required environment
     FOR image IN ${images}

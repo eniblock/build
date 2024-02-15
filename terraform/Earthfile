@@ -16,7 +16,7 @@ deps:
     COPY +terraform/terraform /usr/local/bin/
 
 SETUP:
-    COMMAND
+    FUNCTION
     FROM +deps
     WORKDIR /tf
     ARG tfdir=.
@@ -33,7 +33,7 @@ SETUP:
         && terraform workspace select "$environment"
 
 RUN:
-    COMMAND
+    FUNCTION
     ARG --required command
     ARG options
     ARG output=/dev/stdout
@@ -42,21 +42,21 @@ RUN:
         terraform $command $options > $output
 
 PLAN:
-    COMMAND
+    FUNCTION
     ARG tfdir=.
     ARG --required environment
     DO +SETUP --tfdir $tfdir --environment "$environment"
     DO +RUN --environment "$environment" --command plan
 
 APPLY:
-    COMMAND
+    FUNCTION
     ARG tfdir=.
     ARG --required environment
     DO +SETUP --tfdir $tfdir --environment "$environment"
     DO +RUN  --environment "$environment" --command apply --options "-input=false -auto-approve"
 
 OUTPUT:
-    COMMAND
+    FUNCTION
     ARG tfdir=.
     ARG --required environment
     DO +SETUP --tfdir $tfdir --environment "$environment"
